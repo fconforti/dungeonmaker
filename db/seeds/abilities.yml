@@ -1,0 +1,13 @@
+---
+- name: Strength
+  description: Measuring physical power
+- name: Dexterity
+  description: Measuring agility
+- name: Constitution
+  description: Measuring endurance
+- name: Intelligence
+  description: Measuring reasoning and memory
+- name: Wisdom
+  description: Measuring perception and insight
+- name: Charisma
+  description: Measuring force of personality
