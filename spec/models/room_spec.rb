@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe Adventure do
-  subject { build(:adventure) }
+RSpec.describe Room do
+  subject { build(:room) }
 
   describe 'associations' do
-    it { is_expected.to have_many(:adventure_characters).inverse_of(:adventure) }
+    it { is_expected.to belong_to(:dungeon).inverse_of(:rooms) }
   end
 
   describe 'validations' do

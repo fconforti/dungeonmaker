@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_23_000009) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_03_201515) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,23 +20,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_23_000009) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_abilities_on_name", unique: true
-  end
-
-  create_table "adventure_characters", force: :cascade do |t|
-    t.bigint "adventure_id", null: false
-    t.bigint "character_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["adventure_id"], name: "index_adventure_characters_on_adventure_id"
-    t.index ["character_id"], name: "index_adventure_characters_on_character_id"
-  end
-
-  create_table "adventures", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_adventures_on_name", unique: true
   end
 
   create_table "character_abilities", force: :cascade do |t|
@@ -60,6 +43,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_23_000009) do
     t.index ["klass_id"], name: "index_characters_on_klass_id"
     t.index ["name"], name: "index_characters_on_name", unique: true
     t.index ["race_id"], name: "index_characters_on_race_id"
+  end
+
+  create_table "dungeons", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_dungeons_on_name", unique: true
   end
 
   create_table "klass_abilities", force: :cascade do |t|
@@ -98,8 +89,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_23_000009) do
     t.index ["name"], name: "index_races_on_name", unique: true
   end
 
-  add_foreign_key "adventure_characters", "adventures"
-  add_foreign_key "adventure_characters", "characters"
+  create_table "rooms", force: :cascade do |t|
+    t.bigint "dungeon_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dungeon_id"], name: "index_rooms_on_dungeon_id"
+    t.index ["name"], name: "index_rooms_on_name", unique: true
+  end
+
   add_foreign_key "character_abilities", "abilities"
   add_foreign_key "character_abilities", "characters"
   add_foreign_key "characters", "klasses"
@@ -108,4 +107,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_23_000009) do
   add_foreign_key "klass_abilities", "klasses"
   add_foreign_key "race_abilities", "abilities"
   add_foreign_key "race_abilities", "races"
+  add_foreign_key "rooms", "dungeons"
 end

@@ -9,7 +9,6 @@ class Character < ApplicationRecord
 
   with_options inverse_of: :character, dependent: :restrict_with_exception do
     has_many :character_abilities
-    has_many :adventure_characters
   end
 
   validates :name, presence: true, uniqueness: true
