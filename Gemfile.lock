@@ -68,6 +68,7 @@ GEM
       tzinfo (~> 2.0)
     ast (2.4.2)
     builder (3.2.4)
+    colorize (0.8.1)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
     date (3.3.3)
@@ -224,6 +225,7 @@ PLATFORMS
   x86_64-darwin-19
 
 DEPENDENCIES
+  colorize
   debug
   dicebag
   factory_bot_rails

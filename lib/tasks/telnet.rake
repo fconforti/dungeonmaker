@@ -15,11 +15,15 @@ namespace :telnet do
       Thread.new(tcp_socket) do |socket|
         socket.print "Welcome to Dungeon Maker\n"
         loop do
-          socket.print '>'
+          socket.print '> '
           input = socket.gets.chomp
           command, argument = input.split
-          command = Object.const_get("#{command.classify}Command")
-          command.call(socket:, argument:)
+          begin
+            command = Object.const_get("#{command.classify}Command")
+            command.call(socket:, argument:)
+          rescue NameError
+            socket.puts 'Please check your input'.colorize(:red)
+          end
           break if socket.closed?
         end
       end
