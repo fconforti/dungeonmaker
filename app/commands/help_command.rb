@@ -4,6 +4,6 @@ class HelpCommand
   include Interactor
 
   def call
-    context.socket.puts "Help! (#{context.argument})".colorize(:green)
+    context.socket.puts 'Hello!'.colorize(:green)
   end
 end
