@@ -1,0 +1,4 @@
+commands:
+  help: shows this help
+  create:
+    character: starts a new character creation wizard

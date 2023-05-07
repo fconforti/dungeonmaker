@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Character < ApplicationRecord
+  include Print
+
   before_create :resolve_hp
   with_options inverse_of: :characters do
     belongs_to :race
@@ -17,13 +19,13 @@ class Character < ApplicationRecord
             presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-  # max hp are determined by the highest roll of the character's class hit die
-  # plus the Constitution ability score modifier
   def resolve_abilities
     ensure_abilities
     character_abilities.each(&:resolve)
   end
 
+  # max hp are determined by the highest roll of the character's class hit die
+  # plus the Constitution ability score modifier
   def resolve_hp
     self.hp = klass.hit_die_sides
   end

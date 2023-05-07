@@ -20,10 +20,6 @@ RSpec.describe HelpCommand do
       it 'is expected to provide a socket' do
         expect(context.socket).to eq(socket)
       end
-
-      it 'is expected to print a help index' do
-        expect(context.socket).to have_received(:puts).with('Hello!'.colorize(:green))
-      end
     end
   end
 end

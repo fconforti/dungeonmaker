@@ -1,4 +1,8 @@
 - name: Barbarian
+  hit_die: d10
 - name: Bard
+  hit_die: d10
 - name: Cleric
+  hit_die: d10
 - name: Druid
+  hit_die: d10

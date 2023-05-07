@@ -4,6 +4,13 @@ class HelpCommand
   include Interactor
 
   def call
-    context.socket.puts 'Hello!'.colorize(:green)
+    context.socket.puts output.colorize(:green)
+  end
+
+  private
+
+  def output
+    commands = YAML.load_file(Rails.root.join('config/help.yml'))
+    commands.to_yaml
   end
 end
