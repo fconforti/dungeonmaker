@@ -5,14 +5,28 @@ class CreateCommand
   include Inputs
   include Outputs
 
+  ARGUMENTS = %w[character dungeon].freeze
+
   def call
-    case context.argument
-    when 'character'
-      character = Character.new
-      character.race = select('Choose a race:', Race.all)
-      character.klass = select('Choose a class:', Klass.all)
-      character.name = ask('Choose a name:')
-      character.save ? created_message(character) : error_messages(character)
-    end
+    arg = context.argument
+    return invalid_argument(arg) unless ARGUMENTS.include?(arg)
+
+    send arg
+  end
+
+  private
+
+  def character
+    model = Character.new
+    model.race = select('Choose a race:', Race.all)
+    model.klass = select('Choose a class:', Klass.all)
+    model.name = ask('Choose a name:')
+    model.save ? created_message(model) : error_messages(model)
+  end
+
+  def dungeon
+    model = Dungeon.new
+    model.name = ask('Choose a name:')
+    model.save ? created_message(model) : error_messages(model)
   end
 end

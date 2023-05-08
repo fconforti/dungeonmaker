@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Dungeon < ApplicationRecord
+  include Print
+
   with_options inverse_of: :dungeon, dependent: :restrict_with_exception do
     has_many :rooms
   end

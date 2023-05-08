@@ -4,6 +4,11 @@ module Outputs
   extend ActiveSupport::Concern
 
   included do
+    def invalid_argument(argument)
+      context.socket.puts
+      context.socket.puts "Invalid argument: #{argument}".colorize(:red)
+    end
+
     def error_messages(model)
       context.socket.puts
       context.socket.puts 'Ops... something went wrong:'.colorize(:red)
