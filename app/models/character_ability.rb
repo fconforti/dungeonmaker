@@ -4,6 +4,7 @@ class CharacterAbility < ApplicationRecord
   ABILITY_DICE_STRING = '4d6 k3'
 
   with_options inverse_of: :character_abilities do
+    belongs_to :account
     belongs_to :character
     belongs_to :ability
   end

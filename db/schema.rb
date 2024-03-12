@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_10_162429) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_23_000005) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,17 +22,27 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_10_162429) do
     t.index ["name"], name: "index_abilities_on_name", unique: true
   end
 
+  create_table "accounts", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "character_abilities", force: :cascade do |t|
+    t.bigint "account_id", null: false
     t.bigint "character_id", null: false
     t.bigint "ability_id", null: false
     t.integer "score", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["ability_id"], name: "index_character_abilities_on_ability_id"
+    t.index ["account_id"], name: "index_character_abilities_on_account_id"
     t.index ["character_id"], name: "index_character_abilities_on_character_id"
   end
 
   create_table "characters", force: :cascade do |t|
+    t.bigint "account_id", null: false
     t.bigint "race_id", null: false
     t.bigint "klass_id", null: false
     t.string "name", null: false
@@ -40,16 +50,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_10_162429) do
     t.integer "hp", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_characters_on_account_id"
     t.index ["klass_id"], name: "index_characters_on_klass_id"
     t.index ["name"], name: "index_characters_on_name", unique: true
     t.index ["race_id"], name: "index_characters_on_race_id"
   end
 
   create_table "dungeons", force: :cascade do |t|
+    t.bigint "account_id", null: false
     t.string "name", null: false
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_dungeons_on_account_id"
     t.index ["name"], name: "index_dungeons_on_name", unique: true
   end
 
@@ -90,29 +103,28 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_10_162429) do
   end
 
   create_table "rooms", force: :cascade do |t|
+    t.bigint "account_id", null: false
     t.bigint "dungeon_id", null: false
     t.string "name", null: false
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_rooms_on_account_id"
     t.index ["dungeon_id"], name: "index_rooms_on_dungeon_id"
     t.index ["name"], name: "index_rooms_on_name", unique: true
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "password_digest"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   add_foreign_key "character_abilities", "abilities"
+  add_foreign_key "character_abilities", "accounts"
   add_foreign_key "character_abilities", "characters"
+  add_foreign_key "characters", "accounts"
   add_foreign_key "characters", "klasses"
   add_foreign_key "characters", "races"
+  add_foreign_key "dungeons", "accounts"
   add_foreign_key "klass_abilities", "abilities"
   add_foreign_key "klass_abilities", "klasses"
   add_foreign_key "race_abilities", "abilities"
   add_foreign_key "race_abilities", "races"
+  add_foreign_key "rooms", "accounts"
   add_foreign_key "rooms", "dungeons"
 end

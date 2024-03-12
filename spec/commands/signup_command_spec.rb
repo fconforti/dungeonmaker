@@ -15,11 +15,11 @@ RSpec.describe SignupCommand do
 
     context 'with valid inputs' do
       before do
-        allow(socket).to receive(:gets).and_return('felipe', 'password', 'password')
+        allow(socket).to receive(:gets).and_return('foo@example.com', 'password', 'password')
       end
 
-      it 'is expected to prompt the user to choose a name' do
-        expect(context.socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
+      it 'is expected to prompt the user to enter an email address' do
+        expect(context.socket).to have_received(:puts).with('Email address:'.colorize(:light_blue))
       end
 
       it 'is expected to prompt the user to choose a password' do
@@ -31,29 +31,29 @@ RSpec.describe SignupCommand do
       end
 
       it 'is expected to print a success message' do
-        expect(context.socket).to have_received(:puts).with('Your user has been created!'.colorize(:green))
+        expect(context.socket).to have_received(:puts).with('Your account has been created!'.colorize(:green))
       end
     end
 
 
-    context 'with invalid inputs (missing name)' do
+    context 'with invalid inputs (missing email)' do
       before do
         allow(socket).to receive(:gets).and_return('', 'password', 'password')
       end
 
-      it 'is expected to print an error message (Name can\'t be blank)' do
-        expect(context.socket).to have_received(:puts).with('Name can\'t be blank'.colorize(:red))
+      it 'is expected to print an error message (Email can\'t be blank)' do
+        expect(context.socket).to have_received(:puts).with('Email can\'t be blank'.colorize(:red))
       end
     end
 
-    context 'with invalid inputs (duplicate name)' do
+    context 'with invalid inputs (duplicate email)' do
       before do
-        create :user, name: 'lucy'
-        allow(socket).to receive(:gets).and_return('lucy', 'password', 'password')
+        create :account, email: 'foo@example.com'
+        allow(socket).to receive(:gets).and_return('foo@example.com', 'password', 'password')
       end
 
       it 'is expected to print an error message (Name must exist)' do
-        expect(context.socket).to have_received(:puts).with('Name has already been taken'.colorize(:red))
+        expect(context.socket).to have_received(:puts).with('Email has already been taken'.colorize(:red))
       end
     end
 

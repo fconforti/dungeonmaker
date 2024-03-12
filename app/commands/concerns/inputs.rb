@@ -20,7 +20,6 @@ module Inputs
     private
 
     def print_prompt(prompt)
-      context.socket.puts
       context.socket.puts prompt.colorize(:light_blue)
     end
 

@@ -3,6 +3,7 @@
 class CreateCharacters < ActiveRecord::Migration[7.0]
   def change
     create_table :characters do |t|
+      t.belongs_to :account, null: false, foreign_key: true
       t.belongs_to :race, null: false, foreign_key: true
       t.belongs_to :klass, null: false, foreign_key: true
       t.string :name, null: false, index: { unique: true }

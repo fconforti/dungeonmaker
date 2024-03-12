@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :character do
+    account
     race
     klass
     sequence(:name) { |n| "character #{n}" }

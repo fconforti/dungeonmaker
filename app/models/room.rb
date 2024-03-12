@@ -2,6 +2,7 @@
 
 class Room < ApplicationRecord
   with_options inverse_of: :rooms do
+    belongs_to :account
     belongs_to :dungeon
   end
 

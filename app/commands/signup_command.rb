@@ -6,8 +6,8 @@ class SignupCommand
   include Outputs
 
   def call
-    model = User.new
-    model.name = ask('Choose a name:')
+    model = Account.new
+    model.email = ask('Email address:')
     model.password = ask('Choose a password:')
     model.password_confirmation = ask('Confirm password:')
     model.save ? created_message(model) : error_messages(model)

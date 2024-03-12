@@ -6,6 +6,7 @@ RSpec.describe Dungeon do
   subject { build(:dungeon) }
 
   describe 'associations' do
+    it { is_expected.to belong_to(:account).inverse_of(:dungeons) }
     it { is_expected.to have_many(:rooms).inverse_of(:dungeon) }
   end
 

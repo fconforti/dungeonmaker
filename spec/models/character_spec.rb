@@ -10,6 +10,7 @@ RSpec.describe Character do
   end
 
   describe 'associations' do
+    it { is_expected.to belong_to(:account).inverse_of(:characters) }
     it { is_expected.to belong_to(:race).inverse_of(:characters) }
     it { is_expected.to belong_to(:klass).inverse_of(:characters) }
     it { is_expected.to have_many(:character_abilities).inverse_of(:character) }

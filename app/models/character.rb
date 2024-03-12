@@ -5,6 +5,7 @@ class Character < ApplicationRecord
 
   before_create :resolve_hp
   with_options inverse_of: :characters do
+    belongs_to :account
     belongs_to :race
     belongs_to :klass
   end
@@ -34,7 +35,7 @@ class Character < ApplicationRecord
 
   def ensure_abilities
     Ability.all.find_each do |ability|
-      character_abilities.where(ability:).first_or_create!
+      character_abilities.where(account:, ability:).first_or_create!
     end
   end
 end

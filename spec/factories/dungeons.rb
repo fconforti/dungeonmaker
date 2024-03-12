@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :dungeon do
+    account
     sequence(:name) { |n| "dungeon #{n}" }
   end
 end

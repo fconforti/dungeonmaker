@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :character_ability do
+    account
     character
     ability
   end
