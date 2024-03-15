@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe CreateCommand do
+RSpec.describe Commands::Create do
   let(:socket) { instance_double(TCPSocket) }
-  let(:account) { create :account }
+  let(:account) { create(:account) }
 
   before do
     create(:race, name: 'Gnome')
@@ -16,12 +16,11 @@ RSpec.describe CreateCommand do
   describe '.call' do
     context "with 'character' argument" do
       context 'with valid inputs' do
+        subject(:context) { described_class.call(account:, socket:, argument: 'character') }
 
         before do
           allow(socket).to receive(:gets).and_return('1', '1', 'Lucy')
         end
-
-        subject(:context) { described_class.call(account:, socket:, argument: 'character') }
 
         it 'is expected to prompt the user to choose a race' do
           expect(context.socket).to have_received(:puts).with('Choose a race:'.colorize(:light_blue))
@@ -45,11 +44,11 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (missing race)' do
+        subject(:context) { described_class.call(account:, socket:, argument: 'character') }
+
         before do
           allow(socket).to receive(:gets).and_return('-1', '1', 'Lucy')
         end
-
-        subject(:context) { described_class.call(account:, socket:, argument: 'character') }
 
         it 'is expected to print an error message (Race must exist)' do
           expect(context.socket).to have_received(:puts).with('Race must exist'.colorize(:red))
@@ -57,11 +56,11 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (missing class)' do
+        subject(:context) { described_class.call(account:, socket:, argument: 'character') }
+
         before do
           allow(socket).to receive(:gets).and_return('1', '-1', 'Lucy')
         end
-
-        subject(:context) { described_class.call(account:, socket:, argument: 'character') }
 
         it 'is expected to print an error message (Klass must exist)' do
           expect(context.socket).to have_received(:puts).with('Klass must exist'.colorize(:red))
@@ -69,11 +68,11 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (missing name)' do
+        subject(:context) { described_class.call(account:, socket:, argument: 'character') }
+
         before do
           allow(socket).to receive(:gets).and_return('1', '1', '')
         end
-
-        subject(:context) { described_class.call(account:, socket:, argument: 'character') }
 
         it 'is expected to print an error message (Name can\'t be blank)' do
           expect(context.socket).to have_received(:puts).with('Name can\'t be blank'.colorize(:red))
@@ -81,12 +80,12 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (duplicate name)' do
+        subject(:context) { described_class.call(account:, socket:, argument: 'character') }
+
         before do
           create(:character, name: 'Lucy')
           allow(socket).to receive(:gets).and_return('1', '1', 'Lucy')
         end
-
-        subject(:context) { described_class.call(account:, socket:, argument: 'character') }
 
         it 'is expected to print an error message (Name has already been taken)' do
           expect(context.socket).to have_received(:puts).with('Name has already been taken'.colorize(:red))
@@ -96,11 +95,11 @@ RSpec.describe CreateCommand do
 
     context "with 'dungeon' argument" do
       context 'with valid inputs' do
+        subject(:context) { described_class.call(account:, socket:, argument: 'dungeon') }
+
         before do
           allow(socket).to receive(:gets).and_return('Dark rooms')
         end
-
-        subject(:context) { described_class.call(account:, socket:, argument: 'dungeon') }
 
         it 'is expected to prompt the user to choose a name' do
           expect(context.socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
@@ -116,11 +115,11 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (missing name)' do
+        subject(:context) { described_class.call(account:, socket:, argument: 'dungeon') }
+
         before do
           allow(socket).to receive(:gets).and_return('')
         end
-
-        subject(:context) { described_class.call(account:, socket:, argument: 'dungeon') }
 
         it 'is expected to print an error message (Name can\'t be blank)' do
           expect(context.socket).to have_received(:puts).with('Name can\'t be blank'.colorize(:red))
@@ -128,12 +127,12 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (duplicate name)' do
+        subject(:context) { described_class.call(account:, socket:, argument: 'dungeon') }
+
         before do
           create(:dungeon, name: 'Dark rooms')
           allow(socket).to receive(:gets).and_return('Dark rooms')
         end
-
-        subject(:context) { described_class.call(account:, socket:, argument: 'dungeon') }
 
         it 'is expected to print an error message (Name has already been taken)' do
           expect(context.socket).to have_received(:puts).with('Name has already been taken'.colorize(:red))

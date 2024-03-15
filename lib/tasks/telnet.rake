@@ -13,22 +13,7 @@ namespace :telnet do
     loop do
       tcp_socket = server.accept
       Thread.new(tcp_socket) do |socket|
-        context = WelcomeCommand.call(socket:)
-
-        loop do
-          socket.print '> '
-          input = socket.gets.chomp
-          command_name, argument = input.split
-          begin
-            command = Object.const_get("#{command_name.classify}Command")
-            command.call(account: context.account, socket:, argument:)
-          rescue
-            socket.puts "Please check your input. Type 'help' for the command reference.".colorize(:red)
-          end
-          break if socket.closed?
-
-          socket.puts
-        end
+        GameSession.call(socket:)
       end
     end
   end
