@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Commands::Help do
+RSpec.describe HelpCommand do
   let(:socket) { instance_double(TCPSocket) }
 
   before do

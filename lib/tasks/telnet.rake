@@ -13,7 +13,7 @@ namespace :telnet do
     loop do
       tcp_socket = server.accept
       Thread.new(tcp_socket) do |socket|
-        GameSession.call(socket:)
+        GameSession.new(socket).play
       end
     end
   end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Commands::Create do
+RSpec.describe CreateCommand do
   let(:socket) { instance_double(TCPSocket) }
   let(:account) { create(:account) }
 
