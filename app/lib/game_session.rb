@@ -9,7 +9,6 @@ class GameSession
     set_current_account
     set_current_character
     set_current_dungeon
-    set_current_room
     prompt_command
   end
 
@@ -32,13 +31,25 @@ class GameSession
     end  
   end
 
-  def set_current_room
-  end
-
   def set_current_dungeon
   end
 
   def set_current_character
+    if context.account.characters.any?
+      selection = select("Choose a character or create a new one:", context.account.characters, true)
+      if selection == Inputs::CREATE_NEW_OPTION
+        create_new_context_character
+      elsif selection.is_a? Character
+        context.character = selection
+        context.socket.puts "Thank you! You're now playing as #{context.character.name}.".colorize(:green)
+      end
+    else
+      create_new_context_character
+    end
+  end
+
+  def create_new_context_character
+    context.character = Commands::Create.call(argument: 'character', socket: context.socket, account: context.account)
   end
 
   def set_current_account
