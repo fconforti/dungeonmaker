@@ -3,6 +3,8 @@
 class BaseCommand
   include Interactor
 
+  SOMETHING_WENT_WRONG = "Ops... something went wrong"
+
   def select(prompt, collection)
     print_prompt(prompt)
     list_collection(collection)
@@ -43,9 +45,9 @@ class BaseCommand
 
   def error_messages(model)
     context.socket.puts
-    context.socket.puts 'Ops... something went wrong:'.colorize(:red)
+    error SOMETHING_WENT_WRONG
     model.errors.full_messages.each do |error|
-      context.socket.puts error.colorize(:red)
+      error error
     end
   end
 
@@ -55,20 +57,24 @@ class BaseCommand
     model.print(context.socket)
   end
 
-  def already_logged_in
-    context.socket.puts "You're already logged in.".colorize(:yellow)
-  end
-
-  def already_logged_out
-    context.socket.puts "You're already logged out.".colorize(:yellow)
-  end
-
   def account_required
     context.socket.puts "You need to sign in or sign up before.".colorize(:yellow)
   end
 
   def empty_collection
     context.socket.puts "Empty.".colorize(:yellow) 
+  end
+
+  def success(message)
+    context.socket.puts message.colorize(:green)
+  end
+
+  def warning(message)
+    context.socket.puts message.colorize(:yellow)
+  end
+
+  def error(message)
+    context.socket.puts message.colorize(:red)    
   end
 
 end
