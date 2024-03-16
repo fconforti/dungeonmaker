@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 class CreateCommand < BaseCommand
-
   ARGUMENTS = %w[character dungeon].freeze
 
   def call
     if context.account
       arg = context.argument
       return invalid_argument(arg) unless ARGUMENTS.include?(arg)
+
       send arg
     else
-      account_required      
+      warning ACCOUNT_REQUIRED
     end
   end
 

@@ -3,7 +3,8 @@
 class BaseCommand
   include Interactor
 
-  SOMETHING_WENT_WRONG = "Ops... something went wrong"
+  SOMETHING_WENT_WRONG = 'Ops... something went wrong'
+  ACCOUNT_REQUIRED = 'You need to sign in or sign up before continuing.'
 
   def select(prompt, collection)
     print_prompt(prompt)
@@ -19,6 +20,7 @@ class BaseCommand
   end
 
   private
+
   def print_prompt(prompt)
     context.socket.puts prompt.colorize(:light_blue)
   end
@@ -57,14 +59,6 @@ class BaseCommand
     model.print(context.socket)
   end
 
-  def account_required
-    context.socket.puts "You need to sign in or sign up before.".colorize(:yellow)
-  end
-
-  def empty_collection
-    context.socket.puts "Empty.".colorize(:yellow) 
-  end
-
   def success(message)
     context.socket.puts message.colorize(:green)
   end
@@ -74,7 +68,6 @@ class BaseCommand
   end
 
   def error(message)
-    context.socket.puts message.colorize(:red)    
+    context.socket.puts message.colorize(:red)
   end
-
 end

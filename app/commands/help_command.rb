@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class HelpCommand < BaseCommand
-
   def call
     context.socket.puts output.colorize(:green)
   end
