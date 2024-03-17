@@ -89,6 +89,5 @@ RSpec.describe ListCommand do
         end
       end
     end
-
   end
 end

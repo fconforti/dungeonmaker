@@ -1,4 +1,12 @@
 commands:
   help: shows this help
+  sign:
+    up: sign up for a new account
+    in: sign in with your account
+    out: sign out of your account
   create:
-    character: starts a new character creation wizard
+    character: create a new character (account required)
+    dungeon: create a new dungeon (account required)
+  list:
+    characters: list your characters (account required)
+    dungeons: list your dungeons (account required)
