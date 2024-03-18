@@ -13,74 +13,79 @@ RSpec.describe SignCommand do
   describe '.call' do
     context "with 'up' argument" do
       context 'without a current account' do
-        context 'with valid inputs' do
-          subject(:context) { described_class.call(socket:, argument: 'up') }
+        let(:session) { GameSession.new(socket) }
 
+        context 'with valid inputs' do
           before do
             allow(socket).to receive(:gets).and_return('filippo@example.com', 'secret', 'secret')
+            described_class.new('up', session).run
           end
 
           it 'is expected to prompt the user to enter email' do
-            expect(context.socket).to have_received(:puts).with('Enter your email:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Enter your email:'.colorize(:light_blue))
           end
 
           it 'is expected to prompt the user to choose a password' do
-            expect(context.socket).to have_received(:puts).with('Choose a password:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Choose a password:'.colorize(:light_blue))
           end
 
           it 'is expected to prompt the user to confirm password' do
-            expect(context.socket).to have_received(:puts).with('Confirm password:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Confirm password:'.colorize(:light_blue))
           end
 
           it 'is expected to show the user a success message' do
-            expect(context.socket).to have_received(:puts).with(SignCommand::SIGNED_UP.colorize(:green))
+            expect(socket).to have_received(:puts).with(SignCommand::SIGNED_UP.colorize(:green))
           end
         end
 
         context 'with invalid inputs (empty email)' do
-          subject(:context) { described_class.call(socket:, argument: 'up') }
 
           before do
             allow(socket).to receive(:gets).and_return('', 'secret', 'secret')
+            described_class.new('up', session).run
           end
 
           it 'is expected to show the user an error message (something went wrong)' do
-            expect(context.socket).to have_received(:puts).with(BaseCommand::SOMETHING_WENT_WRONG.colorize(:red))
+            expect(socket).to have_received(:puts).with(BaseCommand::SOMETHING_WENT_WRONG.colorize(:red))
           end
         end
 
         context 'with invalid inputs (empty password)' do
-          subject(:context) { described_class.call(socket:, argument: 'up') }
 
           before do
             allow(socket).to receive(:gets).and_return('filippo@example.com', '', 'secret')
+            described_class.new('up', session).run
           end
 
           it 'is expected to show the user an error message (something went wrong)' do
-            expect(context.socket).to have_received(:puts).with(BaseCommand::SOMETHING_WENT_WRONG.colorize(:red))
+            expect(socket).to have_received(:puts).with(BaseCommand::SOMETHING_WENT_WRONG.colorize(:red))
           end
         end
 
         context 'with invalid inputs (password confirmation not matching)' do
-          subject(:context) { described_class.call(socket:, argument: 'up') }
 
           before do
             allow(socket).to receive(:gets).and_return('filippo@example.com', 'secret', 'notmatching')
+            described_class.new('up', session).run
           end
 
           it 'is expected to show the user an error message (something went wrong)' do
-            expect(context.socket).to have_received(:puts).with(BaseCommand::SOMETHING_WENT_WRONG.colorize(:red))
+            expect(socket).to have_received(:puts).with(BaseCommand::SOMETHING_WENT_WRONG.colorize(:red))
           end
         end
       end
 
       context 'with a current account' do
-        subject(:context) { described_class.call(account:, socket:, argument: 'up') }
 
         let(:account) { create(:account) }
+        let(:session) { GameSession.new(socket, account) }
+
+        before do
+          described_class.new('up', session).run
+        end        
 
         it 'is expected to show the user a warning message (already signed in)' do
-          expect(context.socket).to have_received(:puts).with(SignCommand::ALREADY_SIGNED_IN.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(SignCommand::ALREADY_SIGNED_IN.colorize(:yellow))
         end
       end
     end
@@ -92,32 +97,39 @@ RSpec.describe SignCommand do
         end
 
         context 'without a current account' do
+          let(:session) { GameSession.new(socket) }
+
           context 'with valid inputs' do
-            subject(:context) { described_class.call(socket:, argument: 'in') }
 
             before do
               allow(socket).to receive(:gets).and_return('filippo@example.com', 'secret')
+              described_class.new('in', session).run
             end
 
             it 'is expected to prompt the user to enter email' do
-              expect(context.socket).to have_received(:puts).with('Enter your email:'.colorize(:light_blue))
+              expect(socket).to have_received(:puts).with('Enter your email:'.colorize(:light_blue))
             end
 
             it 'is expected to prompt the user to enter password' do
-              expect(context.socket).to have_received(:puts).with('Enter your password:'.colorize(:light_blue))
+              expect(socket).to have_received(:puts).with('Enter your password:'.colorize(:light_blue))
             end
 
             it 'is expected to show the user a success message' do
-              expect(context.socket).to have_received(:puts).with(SignCommand::SIGNED_IN.colorize(:green))
+              expect(socket).to have_received(:puts).with(SignCommand::SIGNED_IN.colorize(:green))
             end
           end
         end
 
         context 'with a current account' do
-          subject(:context) { described_class.call(account:, socket:, argument: 'in') }
+          let(:account) { create(:account) }
+          let(:session) { GameSession.new(socket, account) }
 
+          before do
+            described_class.new('in', session).run
+          end        
+  
           it 'is expected to show the user a warning message (already signed in)' do
-            expect(context.socket).to have_received(:puts).with(SignCommand::ALREADY_SIGNED_IN.colorize(:yellow))
+            expect(socket).to have_received(:puts).with(SignCommand::ALREADY_SIGNED_IN.colorize(:yellow))
           end
         end
       end
@@ -130,18 +142,26 @@ RSpec.describe SignCommand do
         end
 
         context 'without a current account' do
-          subject(:context) { described_class.call(socket:, argument: 'out') }
+          let(:session) { GameSession.new(socket) }
+
+          before do
+            described_class.new('out', session).run
+          end        
 
           it 'is expected to show the user a warning message' do
-            expect(context.socket).to have_received(:puts).with(SignCommand::ALREADY_SIGNED_OUT.colorize(:yellow))
+            expect(socket).to have_received(:puts).with(SignCommand::ALREADY_SIGNED_OUT.colorize(:yellow))
           end
         end
 
         context 'with a current account' do
-          subject(:context) { described_class.call(account:, socket:, argument: 'out') }
+          let(:session) { GameSession.new(socket, account) }
+
+          before do
+            described_class.new('out', session).run
+          end        
 
           it 'is expected to show the user a success message' do
-            expect(context.socket).to have_received(:puts).with(SignCommand::SIGNED_OUT.colorize(:green))
+            expect(socket).to have_received(:puts).with(SignCommand::SIGNED_OUT.colorize(:green))
           end
         end
       end

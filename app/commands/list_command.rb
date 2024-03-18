@@ -5,16 +5,16 @@ class ListCommand < BaseCommand
 
   EMPTY_LIST = 'Empty.'
 
-  def call
-    if context.account
-      arg = context.argument
+  def run
+    if session.account
+      arg = argument
       return invalid_argument(arg) unless ARGUMENTS.include?(arg)
 
-      collection = context.account.send(arg)
+      collection = session.account.send(arg)
       if collection.empty?
         warning EMPTY_LIST
       else
-        list_collection context.account.send(arg)
+        list_collection session.account.send(arg)
       end
     else
       warning ACCOUNT_REQUIRED

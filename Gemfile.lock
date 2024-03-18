@@ -89,7 +89,6 @@ GEM
       activesupport (>= 5.0)
     i18n (1.13.0)
       concurrent-ruby (~> 1.0)
-    interactor (3.1.2)
     io-console (0.6.0)
     irb (1.6.4)
       reline (>= 0.3.0)
@@ -233,7 +232,6 @@ DEPENDENCIES
   debug
   dicebag
   factory_bot_rails
-  interactor
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.3)

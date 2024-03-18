@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class GameSession
-  attr_reader :socket, :account
+  attr_accessor :socket, :account
 
-  def initialize(socket)
+  def initialize(socket, account=nil)
     @socket = socket
+    @account = account
   end
 
   def play
@@ -13,14 +14,13 @@ class GameSession
       socket.print '> '
       input = socket.gets.chomp
       command_name, argument = input.split
-      begin
+      # begin
         command = Object.const_get("#{command_name.classify}Command")
-        context = command.call(account:, socket:, argument:)
-        @account = context.account
-      rescue NameError
-        socket.puts "Please check your input. Type 'help' for the command reference.".colorize(:red)
-      end
-      break if @socket.closed?
+        command.new(argument, self).run
+        break if socket.closed?
+      # rescue NameError
+      #   socket.puts "Please check your input. Type 'help' for the command reference.".colorize(:red)
+      # end
     end
   end
 end

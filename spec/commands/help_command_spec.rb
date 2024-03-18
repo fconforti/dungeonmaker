@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe HelpCommand do
   let(:socket) { instance_double(TCPSocket) }
+  let(:session) { GameSession.new(socket) }
 
   before do
     allow(socket).to receive(:puts)
@@ -11,14 +12,13 @@ RSpec.describe HelpCommand do
 
   describe '.call' do
     context 'with no arguments' do
-      subject(:context) { described_class.call(socket:, argument: '') }
 
-      it 'is expected to succeed' do
-        expect(context).to be_a_success
+      before do
+        described_class.new('', session).run
       end
 
-      it 'is expected to provide a socket' do
-        expect(context.socket).to eq(socket)
+      it 'is expected to succeed' do
+        expect(socket).to have_received(:puts)
       end
     end
   end

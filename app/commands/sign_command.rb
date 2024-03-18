@@ -12,8 +12,8 @@ class SignCommand < BaseCommand
 
   INVALID_EMAIL_OR_PASSWORD = 'Invalid email or password.'
 
-  def call
-    arg = context.argument
+  def run
+    arg = argument
     return invalid_argument(arg) unless ARGUMENTS.include?(arg)
 
     send arg
@@ -22,7 +22,7 @@ class SignCommand < BaseCommand
   private
 
   def up
-    if context.account
+    if session.account
       warning ALREADY_SIGNED_IN
     else
       email = ask('Enter your email:')
@@ -31,7 +31,7 @@ class SignCommand < BaseCommand
       account.password_confirmation = ask('Confirm password:')
       if account.save
         success SIGNED_UP
-        context.account = account
+        session.account = account
       else
         error_messages(account)
       end
@@ -39,7 +39,7 @@ class SignCommand < BaseCommand
   end
 
   def in
-    if context.account
+    if session.account
       warning ALREADY_SIGNED_IN
     else
       email = ask('Enter your email:')
@@ -47,7 +47,7 @@ class SignCommand < BaseCommand
       account = Account.find_by(email:)
       if account&.authenticate(password)
         success SIGNED_IN
-        context.account = account
+        session.account = account
       else
         error INVALID_EMAIL_OR_PASSWORD
       end
@@ -55,8 +55,8 @@ class SignCommand < BaseCommand
   end
 
   def out
-    if context.account
-      context.account = nil
+    if session.account
+      session.account = nil
       success SIGNED_OUT
     else
       warning ALREADY_SIGNED_OUT

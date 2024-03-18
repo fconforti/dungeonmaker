@@ -13,27 +13,32 @@ RSpec.describe ListCommand do
   describe '.call' do
     context "with 'characters' argument" do
       context 'without a current account' do
-        subject(:context) { described_class.call(socket:, argument: 'characters') }
+        let(:session) { GameSession.new(socket) }
+
+        before do
+          described_class.new('characters', session).run
+        end
 
         it 'is expected to show the user a warning message (account required)' do
-          expect(context.socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
         end
       end
 
       context 'with a current account' do
         let(:account) { create(:account) }
+        let(:session) { GameSession.new(socket, account) }
 
         context 'without characters' do
-          subject(:context) { described_class.call(account:, socket:, argument: 'characters') }
-
+          before do
+            described_class.new('characters', session).run
+          end
+  
           it 'is expected to show the user a warning message (empty)' do
-            expect(context.socket).to have_received(:puts).with(ListCommand::EMPTY_LIST.colorize(:yellow))
+            expect(socket).to have_received(:puts).with(ListCommand::EMPTY_LIST.colorize(:yellow))
           end
         end
 
         context 'with 3 characters' do
-          subject(:context) { described_class.call(account:, socket:, argument: 'characters') }
-
           let!(:race) { create(:race, name: 'Gnome') }
           let!(:klass) { create(:klass, name: 'Druid') }
 
@@ -43,10 +48,14 @@ RSpec.describe ListCommand do
             end
           end
 
+          before do
+            described_class.new('characters', session).run
+          end  
+
           it 'is expected to show the user the list of characters' do
-            expect(context.socket).to have_received(:puts).with('character 0')
-            expect(context.socket).to have_received(:puts).with('character 1')
-            expect(context.socket).to have_received(:puts).with('character 2')
+            expect(socket).to have_received(:puts).with('character 0')
+            expect(socket).to have_received(:puts).with('character 1')
+            expect(socket).to have_received(:puts).with('character 2')
           end
         end
       end
@@ -54,37 +63,46 @@ RSpec.describe ListCommand do
 
     context "with 'dungeons' argument" do
       context 'without a current account' do
-        subject(:context) { described_class.call(socket:, argument: 'dungeons') }
+        let(:session) { GameSession.new(socket) }
+
+        before do
+          described_class.new('dungeons', session).run
+        end
 
         it 'is expected to show the user a warning message (account required)' do
-          expect(context.socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
         end
       end
 
       context 'with a current account' do
         let(:account) { create(:account) }
+        let(:session) { GameSession.new(socket, account) }
 
         context 'without dungeons' do
-          subject(:context) { described_class.call(account:, socket:, argument: 'dungeons') }
-
+          before do
+            described_class.new('dungeons', session).run
+          end
+  
           it 'is expected to show the user a warning message (empty)' do
-            expect(context.socket).to have_received(:puts).with(ListCommand::EMPTY_LIST.colorize(:yellow))
+            expect(socket).to have_received(:puts).with(ListCommand::EMPTY_LIST.colorize(:yellow))
           end
         end
 
         context 'with 3 dungeons' do
-          subject(:context) { described_class.call(account:, socket:, argument: 'dungeons') }
-
           before do
             3.times do |i|
               create(:dungeon, name: "dungeon #{i}", account:)
             end
           end
 
+          before do
+            described_class.new('dungeons', session).run
+          end  
+
           it 'is expected to show the user the list of dungeons' do
-            expect(context.socket).to have_received(:puts).with('dungeon 0')
-            expect(context.socket).to have_received(:puts).with('dungeon 1')
-            expect(context.socket).to have_received(:puts).with('dungeon 2')
+            expect(socket).to have_received(:puts).with('dungeon 0')
+            expect(socket).to have_received(:puts).with('dungeon 1')
+            expect(socket).to have_received(:puts).with('dungeon 2')
           end
         end
       end
