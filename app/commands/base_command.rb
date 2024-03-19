@@ -4,6 +4,8 @@ class BaseCommand
   SOMETHING_WENT_WRONG = 'Ops... something went wrong'
   ACCOUNT_REQUIRED = 'You need to sign in or sign up before continuing.'
   DUNGEON_REQUIRED = 'You need to select a dungeon or create a new one before continuing.'
+  ALREADY_SIGNED_IN = "You're already signed in."
+  ALREADY_SIGNED_OUT = "You're already signed out."
 
   attr_reader :argument, :session
 
@@ -78,11 +80,26 @@ class BaseCommand
   end
 
   def account_required!
-    warning(ACCOUNT_REQUIRED) && return unless session.account.present?
+    if session.account.blank?
+      warning(ACCOUNT_REQUIRED)
+      false
+    end
+    true
   end
 
   def dungeon_required!
-    warning(DUNGEON_REQUIRED) && return unless session.dungeon.present?
+    if session.dungeon.blank?
+      warning(DUNGEON_REQUIRED)
+      false
+    end
+    true
   end
 
+  def no_account_required!
+    if session.account.present?
+      warning(ALREADY_SIGNED_IN)
+      false
+    end
+    true
+  end
 end

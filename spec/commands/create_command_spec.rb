@@ -17,7 +17,6 @@ RSpec.describe CreateCommand do
   describe '#run' do
     context "with 'character' argument" do
       context 'with valid inputs' do
-
         before do
           allow(socket).to receive(:gets).and_return('1', '1', 'Lucy')
           described_class.new('character', session).run
@@ -45,7 +44,6 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (missing race)' do
-
         before do
           allow(socket).to receive(:gets).and_return('-1', '1', 'Lucy')
           described_class.new('character', session).run
@@ -57,7 +55,6 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (missing class)' do
-
         before do
           allow(socket).to receive(:gets).and_return('1', '-1', 'Lucy')
           described_class.new('character', session).run
@@ -69,7 +66,6 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (missing name)' do
-
         before do
           allow(socket).to receive(:gets).and_return('1', '1', '')
           described_class.new('character', session).run
@@ -81,7 +77,6 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (duplicate name)' do
-
         before do
           create(:character, name: 'Lucy')
           allow(socket).to receive(:gets).and_return('1', '1', 'Lucy')
@@ -96,7 +91,6 @@ RSpec.describe CreateCommand do
 
     context "with 'dungeon' argument" do
       context 'with valid inputs' do
-
         before do
           allow(socket).to receive(:gets).and_return('Dark rooms')
           described_class.new('dungeon', session).run
@@ -116,7 +110,6 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (missing name)' do
-
         before do
           allow(socket).to receive(:gets).and_return('')
           described_class.new('dungeon', session).run
@@ -128,7 +121,6 @@ RSpec.describe CreateCommand do
       end
 
       context 'with invalid inputs (duplicate name)' do
-
         before do
           create(:dungeon, name: 'Dark rooms')
           allow(socket).to receive(:gets).and_return('Dark rooms')
@@ -140,6 +132,5 @@ RSpec.describe CreateCommand do
         end
       end
     end
-
   end
 end

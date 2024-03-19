@@ -11,7 +11,6 @@ RSpec.describe Account do
     it { is_expected.to have_many(:exits).inverse_of(:account) }
   end
 
-
   describe 'validations' do
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to validate_uniqueness_of(:email) }

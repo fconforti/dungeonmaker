@@ -32,7 +32,7 @@ RSpec.describe ListCommand do
           before do
             described_class.new('characters', session).run
           end
-  
+
           it 'is expected to show the user a warning message (empty)' do
             expect(socket).to have_received(:puts).with(ListCommand::EMPTY_LIST.colorize(:yellow))
           end
@@ -46,11 +46,8 @@ RSpec.describe ListCommand do
             3.times do |i|
               create(:character, name: "character #{i}", account:, race:, klass:)
             end
-          end
-
-          before do
             described_class.new('characters', session).run
-          end  
+          end
 
           it 'is expected to show the user the list of characters' do
             expect(socket).to have_received(:puts).with('character 0')
@@ -82,7 +79,7 @@ RSpec.describe ListCommand do
           before do
             described_class.new('dungeons', session).run
           end
-  
+
           it 'is expected to show the user a warning message (empty)' do
             expect(socket).to have_received(:puts).with(ListCommand::EMPTY_LIST.colorize(:yellow))
           end
@@ -93,11 +90,8 @@ RSpec.describe ListCommand do
             3.times do |i|
               create(:dungeon, name: "dungeon #{i}", account:)
             end
-          end
-
-          before do
             described_class.new('dungeons', session).run
-          end  
+          end
 
           it 'is expected to show the user the list of dungeons' do
             expect(socket).to have_received(:puts).with('dungeon 0')

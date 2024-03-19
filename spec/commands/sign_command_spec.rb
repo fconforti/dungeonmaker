@@ -39,7 +39,6 @@ RSpec.describe SignCommand do
         end
 
         context 'with invalid inputs (empty email)' do
-
           before do
             allow(socket).to receive(:gets).and_return('', 'secret', 'secret')
             described_class.new('up', session).run
@@ -51,7 +50,6 @@ RSpec.describe SignCommand do
         end
 
         context 'with invalid inputs (empty password)' do
-
           before do
             allow(socket).to receive(:gets).and_return('filippo@example.com', '', 'secret')
             described_class.new('up', session).run
@@ -63,7 +61,6 @@ RSpec.describe SignCommand do
         end
 
         context 'with invalid inputs (password confirmation not matching)' do
-
           before do
             allow(socket).to receive(:gets).and_return('filippo@example.com', 'secret', 'notmatching')
             described_class.new('up', session).run
@@ -76,16 +73,15 @@ RSpec.describe SignCommand do
       end
 
       context 'with a current account' do
-
         let(:account) { create(:account) }
         let(:session) { GameSession.new(socket, account) }
 
         before do
           described_class.new('up', session).run
-        end        
+        end
 
         it 'is expected to show the user a warning message (already signed in)' do
-          expect(socket).to have_received(:puts).with(SignCommand::ALREADY_SIGNED_IN.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(BaseCommand::ALREADY_SIGNED_IN.colorize(:yellow))
         end
       end
     end
@@ -100,7 +96,6 @@ RSpec.describe SignCommand do
           let(:session) { GameSession.new(socket) }
 
           context 'with valid inputs' do
-
             before do
               allow(socket).to receive(:gets).and_return('filippo@example.com', 'secret')
               described_class.new('in', session).run
@@ -126,10 +121,10 @@ RSpec.describe SignCommand do
 
           before do
             described_class.new('in', session).run
-          end        
-  
+          end
+
           it 'is expected to show the user a warning message (already signed in)' do
-            expect(socket).to have_received(:puts).with(SignCommand::ALREADY_SIGNED_IN.colorize(:yellow))
+            expect(socket).to have_received(:puts).with(BaseCommand::ALREADY_SIGNED_IN.colorize(:yellow))
           end
         end
       end
@@ -146,10 +141,10 @@ RSpec.describe SignCommand do
 
           before do
             described_class.new('out', session).run
-          end        
+          end
 
           it 'is expected to show the user a warning message' do
-            expect(socket).to have_received(:puts).with(SignCommand::ALREADY_SIGNED_OUT.colorize(:yellow))
+            expect(socket).to have_received(:puts).with(BaseCommand::ALREADY_SIGNED_OUT.colorize(:yellow))
           end
         end
 
@@ -158,7 +153,7 @@ RSpec.describe SignCommand do
 
           before do
             described_class.new('out', session).run
-          end        
+          end
 
           it 'is expected to show the user a success message' do
             expect(socket).to have_received(:puts).with(SignCommand::SIGNED_OUT.colorize(:green))

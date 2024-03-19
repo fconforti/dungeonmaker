@@ -5,7 +5,7 @@ Style/Documentation:
   Enabled: false
 
 RSpec/NestedGroups:
-  Max: 4
+  Max: 5
 
 Metrics/BlockLength:
   Max: 30

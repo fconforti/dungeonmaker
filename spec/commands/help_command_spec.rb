@@ -12,7 +12,6 @@ RSpec.describe HelpCommand do
 
   describe '.call' do
     context 'with no arguments' do
-
       before do
         described_class.new('', session).run
       end

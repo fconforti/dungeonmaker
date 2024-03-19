@@ -7,9 +7,6 @@ class SignCommand < BaseCommand
   SIGNED_IN = "Welcome back! You're now signed in."
   SIGNED_OUT = "You're now signed out."
 
-  ALREADY_SIGNED_IN = "You're already signed in."
-  ALREADY_SIGNED_OUT = "You're already signed out."
-
   INVALID_EMAIL_OR_PASSWORD = 'Invalid email or password.'
 
   def run
@@ -21,10 +18,8 @@ class SignCommand < BaseCommand
 
   private
 
-  def up
-    if session.account
-      warning ALREADY_SIGNED_IN
-    else
+  def up    
+    if session.account.blank?    
       email = ask('Enter your email:')
       account = Account.new(email:)
       account.password = ask('Choose a password:')
@@ -35,13 +30,13 @@ class SignCommand < BaseCommand
       else
         error_messages(account)
       end
+    else
+      warning ALREADY_SIGNED_IN
     end
   end
 
   def in
-    if session.account
-      warning ALREADY_SIGNED_IN
-    else
+    if session.account.blank?    
       email = ask('Enter your email:')
       password = ask('Enter your password:')
       account = Account.find_by(email:)
@@ -51,15 +46,17 @@ class SignCommand < BaseCommand
       else
         error INVALID_EMAIL_OR_PASSWORD
       end
+    else
+      warning ALREADY_SIGNED_IN
     end
   end
 
   def out
-    if session.account
-      session.account = nil
-      success SIGNED_OUT
-    else
+    if session.account.blank?
       warning ALREADY_SIGNED_OUT
+    else
+      session.account = nil
+      success SIGNED_OUT  
     end
   end
 end
