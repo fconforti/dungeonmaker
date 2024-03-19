@@ -9,6 +9,7 @@ class Dungeon < ApplicationRecord
 
   with_options inverse_of: :dungeon, dependent: :restrict_with_exception do
     has_many :rooms
+    has_many :exits
   end
 
   validates :name, presence: true, uniqueness: true

@@ -3,6 +3,7 @@
 class BaseCommand
   SOMETHING_WENT_WRONG = 'Ops... something went wrong'
   ACCOUNT_REQUIRED = 'You need to sign in or sign up before continuing.'
+  DUNGEON_REQUIRED = 'You need to select a dungeon or create a new one before continuing.'
 
   attr_reader :argument, :session
 
@@ -75,4 +76,13 @@ class BaseCommand
   def error(message)
     session.socket.puts message.colorize(:red)
   end
+
+  def account_required!
+    warning(ACCOUNT_REQUIRED) && return unless session.account.present?
+  end
+
+  def dungeon_required!
+    warning(DUNGEON_REQUIRED) && return unless session.dungeon.present?
+  end
+
 end

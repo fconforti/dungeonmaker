@@ -8,6 +8,7 @@ class Account < ApplicationRecord
     has_many :character_abilities
     has_many :dungeons
     has_many :rooms
+    has_many :exits
   end
 
   validates :email, presence: true, uniqueness: true

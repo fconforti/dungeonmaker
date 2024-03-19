@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_23_000005) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_19_110128) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_23_000005) do
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_dungeons_on_account_id"
     t.index ["name"], name: "index_dungeons_on_name", unique: true
+  end
+
+  create_table "exits", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "dungeon_id", null: false
+    t.bigint "from_room_id", null: false
+    t.bigint "to_room_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_exits_on_account_id"
+    t.index ["dungeon_id"], name: "index_exits_on_dungeon_id"
+    t.index ["from_room_id"], name: "index_exits_on_from_room_id"
+    t.index ["to_room_id"], name: "index_exits_on_to_room_id"
   end
 
   create_table "klass_abilities", force: :cascade do |t|
@@ -121,6 +134,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_23_000005) do
   add_foreign_key "characters", "klasses"
   add_foreign_key "characters", "races"
   add_foreign_key "dungeons", "accounts"
+  add_foreign_key "exits", "accounts"
+  add_foreign_key "exits", "dungeons"
+  add_foreign_key "exits", "rooms", column: "from_room_id"
+  add_foreign_key "exits", "rooms", column: "to_room_id"
   add_foreign_key "klass_abilities", "abilities"
   add_foreign_key "klass_abilities", "klasses"
   add_foreign_key "race_abilities", "abilities"

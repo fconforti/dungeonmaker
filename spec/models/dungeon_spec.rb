@@ -8,6 +8,7 @@ RSpec.describe Dungeon do
   describe 'associations' do
     it { is_expected.to belong_to(:account).inverse_of(:dungeons) }
     it { is_expected.to have_many(:rooms).inverse_of(:dungeon) }
+    it { is_expected.to have_many(:exits).inverse_of(:dungeon) }
   end
 
   describe 'validations' do
