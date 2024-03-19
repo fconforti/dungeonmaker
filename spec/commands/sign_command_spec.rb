@@ -81,7 +81,7 @@ RSpec.describe SignCommand do
         end
 
         it 'is expected to show the user a warning message (already signed in)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ALREADY_SIGNED_IN.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(BaseCommand::NO_ACCOUNT_REQUIRED.colorize(:yellow))
         end
       end
     end
@@ -124,7 +124,7 @@ RSpec.describe SignCommand do
           end
 
           it 'is expected to show the user a warning message (already signed in)' do
-            expect(socket).to have_received(:puts).with(BaseCommand::ALREADY_SIGNED_IN.colorize(:yellow))
+            expect(socket).to have_received(:puts).with(BaseCommand::NO_ACCOUNT_REQUIRED.colorize(:yellow))
           end
         end
       end
@@ -144,7 +144,7 @@ RSpec.describe SignCommand do
           end
 
           it 'is expected to show the user a warning message' do
-            expect(socket).to have_received(:puts).with(BaseCommand::ALREADY_SIGNED_OUT.colorize(:yellow))
+            expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
           end
         end
 

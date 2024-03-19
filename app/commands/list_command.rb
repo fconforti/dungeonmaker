@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class ListCommand < BaseCommand
-  ARGUMENTS = %w[characters dungeons].freeze
+  ARGUMENTS = %w[characters dungeons rooms exits].freeze
 
   EMPTY_LIST = 'Empty.'
 
   def run
-    if session.account
+    with_account do
       arg = argument
       return invalid_argument(arg) unless ARGUMENTS.include?(arg)
 
@@ -16,8 +16,6 @@ class ListCommand < BaseCommand
       else
         list_collection session.account.send(arg)
       end
-    else
-      warning ACCOUNT_REQUIRED
     end
   end
 end

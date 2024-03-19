@@ -4,16 +4,16 @@ class CreateCommand < BaseCommand
   ARGUMENTS = %w[character dungeon room exit].freeze
 
   def run
-    arg = argument
-    return invalid_argument(arg) unless ARGUMENTS.include?(arg)
-
-    send arg
+    with_account do
+      arg = argument
+      return invalid_argument(arg) unless ARGUMENTS.include?(arg)
+      send arg
+    end
   end
 
   private
 
   def character
-    return unless account_required!
     model = Character.new
     model.account = session.account
     model.race = select('Choose a race:', Race.all)
@@ -23,7 +23,6 @@ class CreateCommand < BaseCommand
   end
 
   def dungeon
-    return unless account_required!
     model = Dungeon.new
     model.account = session.account
     model.name = ask('Choose a name:')
@@ -31,24 +30,20 @@ class CreateCommand < BaseCommand
   end
 
   def room
-    return unless account_required!
-    return unless dungeon_required!
     model = Room.new
     model.account = session.account
-    model.dungeon = session.dungeon
+    model.dungeon = session.dungeon || select('Choose a dungeon:', session.account.dungeons)
     model.name = ask('Choose a name:')
     model.description = ask('Description:')
     model.save ? created_message(model) : error_messages(model)
   end
 
   def exit
-    return unless account_required!
-    return unless dungeon_required!
     model = Exit.new
     model.account = session.account
-    model.dungeon = session.dungeon
-    model.room_a = select('Room A:', session.dungeon.rooms)
-    model.room_b = select('Room B:', session.dungeon.rooms)
+    model.dungeon = session.dungeon || select('Choose a dungeon:', session.account.dungeons)
+    model.from_room = select('From room:', session.account.rooms)
+    model.to_room = select('To room:', session.account.rooms)
     model.save ? created_message(model) : error_messages(model)
   end
 end

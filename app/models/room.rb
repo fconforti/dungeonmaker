@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Room < ApplicationRecord
+  include Print
+
   with_options inverse_of: :rooms do
     belongs_to :account
     belongs_to :dungeon

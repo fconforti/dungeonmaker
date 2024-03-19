@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class GameSession
-  attr_accessor :socket, :account
+  attr_accessor :socket, :account, :character, :dungeon, :room
 
-  def initialize(socket, account = nil)
+  def initialize(socket, account = nil, dungeon = nil)
     @socket = socket
     @account = account
+    @dungeon = dungeon
   end
 
   def play
