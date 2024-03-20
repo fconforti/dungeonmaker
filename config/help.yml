@@ -10,3 +10,6 @@ commands:
   list:
     characters: list your characters (account required)
     dungeons: list your dungeons (account required)
+  mode:
+    play: change game mode to 'play'
+    edit: change game mode to 'edit'

@@ -4,6 +4,7 @@ class Character < ApplicationRecord
   include Print
 
   before_create :resolve_hp
+
   with_options inverse_of: :characters do
     belongs_to :account
     belongs_to :race
@@ -12,6 +13,7 @@ class Character < ApplicationRecord
 
   with_options inverse_of: :character, dependent: :restrict_with_exception do
     has_many :character_abilities
+    has_one :position, class_name: 'CharacterPosition'
   end
 
   validates :name, presence: true, uniqueness: true

@@ -16,5 +16,9 @@ class Room < ApplicationRecord
     has_many :entrances, foreign_key: :to_room_id, class_name: 'Exit'
   end
 
+  with_options inverse_of: :room, dependent: :restrict_with_exception do
+    has_many :character_positions    
+  end
+
   validates :name, presence: true, uniqueness: true
 end

@@ -14,6 +14,7 @@ RSpec.describe Character do
     it { is_expected.to belong_to(:race).inverse_of(:characters) }
     it { is_expected.to belong_to(:klass).inverse_of(:characters) }
     it { is_expected.to have_many(:character_abilities).inverse_of(:character) }
+    it { is_expected.to have_one(:position).class_name('CharacterPosition').inverse_of(:character) }
   end
 
   describe 'validations' do

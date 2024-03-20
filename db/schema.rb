@@ -43,6 +43,7 @@ ActiveRecord::Schema[7.0].define(version: 20_240_319_110_128) do
     t.index ['character_id'], name: 'index_character_abilities_on_character_id'
   end
 
+<<<<<<< HEAD
   create_table 'characters', force: :cascade do |t|
     t.bigint 'account_id', null: false
     t.bigint 'race_id', null: false
@@ -56,6 +57,34 @@ ActiveRecord::Schema[7.0].define(version: 20_240_319_110_128) do
     t.index ['klass_id'], name: 'index_characters_on_klass_id'
     t.index ['name'], name: 'index_characters_on_name', unique: true
     t.index ['race_id'], name: 'index_characters_on_race_id'
+=======
+  create_table "character_positions", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "character_id", null: false
+    t.bigint "dungeon_id", null: false
+    t.bigint "room_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_character_positions_on_account_id"
+    t.index ["character_id"], name: "index_character_positions_on_character_id"
+    t.index ["dungeon_id"], name: "index_character_positions_on_dungeon_id"
+    t.index ["room_id"], name: "index_character_positions_on_room_id"
+  end
+
+  create_table "characters", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "race_id", null: false
+    t.bigint "klass_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.integer "hp", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_characters_on_account_id"
+    t.index ["klass_id"], name: "index_characters_on_klass_id"
+    t.index ["name"], name: "index_characters_on_name", unique: true
+    t.index ["race_id"], name: "index_characters_on_race_id"
+>>>>>>> f31eeae (Added character positions.)
   end
 
   create_table 'dungeons', force: :cascade do |t|
@@ -117,6 +146,7 @@ ActiveRecord::Schema[7.0].define(version: 20_240_319_110_128) do
     t.index ['name'], name: 'index_races_on_name', unique: true
   end
 
+<<<<<<< HEAD
   create_table 'rooms', force: :cascade do |t|
     t.bigint 'account_id', null: false
     t.bigint 'dungeon_id', null: false
@@ -146,4 +176,23 @@ ActiveRecord::Schema[7.0].define(version: 20_240_319_110_128) do
   add_foreign_key 'race_abilities', 'races'
   add_foreign_key 'rooms', 'accounts'
   add_foreign_key 'rooms', 'dungeons'
+=======
+  add_foreign_key "character_abilities", "abilities"
+  add_foreign_key "character_abilities", "accounts"
+  add_foreign_key "character_abilities", "characters"
+  add_foreign_key "character_positions", "accounts"
+  add_foreign_key "character_positions", "characters"
+  add_foreign_key "character_positions", "dungeons"
+  add_foreign_key "character_positions", "rooms"
+  add_foreign_key "characters", "accounts"
+  add_foreign_key "characters", "klasses"
+  add_foreign_key "characters", "races"
+  add_foreign_key "dungeons", "accounts"
+  add_foreign_key "klass_abilities", "abilities"
+  add_foreign_key "klass_abilities", "klasses"
+  add_foreign_key "race_abilities", "abilities"
+  add_foreign_key "race_abilities", "races"
+  add_foreign_key "rooms", "accounts"
+  add_foreign_key "rooms", "dungeons"
+>>>>>>> f31eeae (Added character positions.)
 end
