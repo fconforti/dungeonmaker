@@ -32,7 +32,7 @@ class CreateCommand < BaseCommand
   def room
     model = Room.new
     model.account = session.account
-    model.dungeon = session.dungeon || select('Choose a dungeon:', session.account.dungeons)
+    model.dungeon = select('Choose a dungeon:', session.account.dungeons)
     model.name = ask('Choose a name:')
     model.description = ask('Description:')
     model.save ? created_message(model) : error_messages(model)
@@ -41,7 +41,7 @@ class CreateCommand < BaseCommand
   def exit
     model = Exit.new
     model.account = session.account
-    model.dungeon = session.dungeon || select('Choose a dungeon:', session.account.dungeons)
+    model.dungeon = select('Choose a dungeon:', session.account.dungeons)
     model.from_room = select('From room:', session.account.rooms)
     model.to_room = select('To room:', session.account.rooms)
     model.save ? created_message(model) : error_messages(model)

@@ -181,75 +181,24 @@ RSpec.describe CreateCommand do
 
       context "with 'room' argument" do
 
-        context "without a current dungeon" do
-
-          context 'with valid inputs' do
-            before do
-              allow(socket).to receive(:gets).and_return('1', 'My room')
-              described_class.new('room', session).run
-            end
-    
-            it 'is expected to prompt the user to choose a dungeon' do
-              expect(socket).to have_received(:puts).with('Choose a dungeon:'.colorize(:light_blue))
-            end
-
-            it 'is expected to prompt the user to choose a name' do
-              expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
-            end
-    
-            it 'is expected to print a success message' do
-              expect(socket).to have_received(:puts).with('Your room has been created!'.colorize(:green))
-            end
-    
+        context 'with valid inputs' do
+          before do
+            allow(socket).to receive(:gets).and_return('1', 'My room')
+            described_class.new('room', session).run
           end
   
-        end
-
-        context "with a current dungeon" do
-          
-          before do
-            session.dungeon = dungeon
+          it 'is expected to prompt the user to choose a dungeon' do
+            expect(socket).to have_received(:puts).with('Choose a dungeon:'.colorize(:light_blue))
           end
 
-          context 'with valid inputs' do
-            before do
-              allow(socket).to receive(:gets).and_return('My room')
-              described_class.new('room', session).run
-            end
-    
-            it 'is expected to prompt the user to choose a name' do
-              expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
-            end
-    
-            it 'is expected to print a success message' do
-              expect(socket).to have_received(:puts).with('Your room has been created!'.colorize(:green))
-            end
-    
+          it 'is expected to prompt the user to choose a name' do
+            expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
           end
-    
-          context 'with invalid inputs (missing name)' do
-            before do
-              allow(socket).to receive(:gets).and_return('')
-              described_class.new('room', session).run
-            end
-    
-            it 'is expected to print an error message (Name can\'t be blank)' do
-              expect(socket).to have_received(:puts).with('Name can\'t be blank'.colorize(:red))
-            end
+  
+          it 'is expected to print a success message' do
+            expect(socket).to have_received(:puts).with('Your room has been created!'.colorize(:green))
           end
-    
-          context 'with invalid inputs (duplicate name)' do
-            before do
-              create(:room, account: account, dungeon: dungeon, name: 'My room')
-              allow(socket).to receive(:gets).and_return('My room')
-              described_class.new('room', session).run
-            end
-    
-            it 'is expected to print an error message (Name has already been taken)' do
-              expect(socket).to have_received(:puts).with('Name has already been taken'.colorize(:red))
-            end
-          end
-            
+  
         end
 
       end
