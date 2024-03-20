@@ -212,6 +212,7 @@ GEM
       sprockets (>= 3.0.0)
     thor (1.2.1)
     timeout (0.3.2)
+    tty-font (0.5.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.4.2)
@@ -241,6 +242,7 @@ DEPENDENCIES
   rubocop-rspec
   shoulda-matchers (~> 5.0)
   sprockets-rails
+  tty-font
   tzinfo-data
 
 RUBY VERSION

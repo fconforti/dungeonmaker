@@ -10,10 +10,8 @@ class SignCommand < BaseCommand
   INVALID_EMAIL_OR_PASSWORD = 'Invalid email or password.'
 
   def run
-    arg = argument
-    return invalid_argument(arg) unless ARGUMENTS.include?(arg)
-
-    send arg
+    return invalid_argument(argument) unless ARGUMENTS.include?(argument)
+    send argument
   end
 
   private

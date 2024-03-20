@@ -9,12 +9,11 @@ class ListCommand < BaseCommand
     with_account do
       arg = argument
       return invalid_argument(arg) unless ARGUMENTS.include?(arg)
-
       collection = session.account.send(arg)
       if collection.empty?
         warning EMPTY_LIST
       else
-        list_collection session.account.send(arg)
+        list_collection session.account.send(argument)
       end
     end
   end

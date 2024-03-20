@@ -10,7 +10,7 @@ RSpec.describe ListCommand do
     allow(socket).to receive(:print)
   end
 
-  describe '.call' do
+  describe '#run' do
     context "with 'characters' argument" do
       context 'without a current account' do
         let(:session) { GameSession.new(socket) }

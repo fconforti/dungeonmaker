@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 class GameSession
-  attr_accessor :socket, :account, :character, :dungeon, :room
+  attr_accessor :socket, :account, :mode
 
-  def initialize(socket, account = nil, dungeon = nil)
+  def initialize(socket, account=nil, mode=:play)
     @socket = socket
     @account = account
-    @dungeon = dungeon
+    @mode = mode
   end
 
   def play
+    welcome_user
     loop do
       socket.puts
       socket.print '> '
@@ -23,5 +24,11 @@ class GameSession
       #   socket.puts "Please check your input. Type 'help' for the command reference.".colorize(:red)
       # end
     end
+  end
+
+  private
+  def welcome_user
+    font = TTY::Font.new(:doom)
+    socket.puts font.write("DUNGEON MAKER").colorize(:green)
   end
 end

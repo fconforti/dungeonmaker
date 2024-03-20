@@ -10,7 +10,7 @@ RSpec.describe SignCommand do
     allow(socket).to receive(:print)
   end
 
-  describe '.call' do
+  describe '#run' do
     context "with 'up' argument" do
       context 'without a current account' do
         let(:session) { GameSession.new(socket) }

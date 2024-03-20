@@ -47,8 +47,9 @@ class BaseCommand
   end
 
   def invalid_argument(argument)
+    argument_desc = argument.blank? ? '<empty>' : argument
     session.socket.puts
-    session.socket.puts "Invalid argument: #{argument}".colorize(:red)
+    session.socket.puts "Invalid argument: #{argument_desc}".colorize(:red)
   end
 
   def error_messages(model)
