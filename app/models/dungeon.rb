@@ -14,4 +14,8 @@ class Dungeon < ApplicationRecord
   end
 
   validates :name, presence: true, uniqueness: true
+
+  def base_room
+    rooms.first
+  end
 end

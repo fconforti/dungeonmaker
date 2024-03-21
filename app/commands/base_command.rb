@@ -4,7 +4,9 @@ class BaseCommand
   SOMETHING_WENT_WRONG = 'Ops... something went wrong'
   ACCOUNT_REQUIRED = 'You need to sign in or sign up before continuing.'
   NO_ACCOUNT_REQUIRED = 'You need to sign out before continuing.'
-  
+  CHARACTER_REQUIRED = 'You need to choose a character first.'
+  NO_POSITION_REQUIRED = 'You need to escape the current dungeon first!'
+
   attr_reader :argument, :session
 
   def initialize(argument, session)
@@ -93,6 +95,24 @@ class BaseCommand
       yield
     else
       warning ACCOUNT_REQUIRED
+    end
+  end
+
+  def with_character
+    return unless block_given?
+    if session.character.present?
+      yield
+    else
+      warning CHARACTER_REQUIRED
+    end
+  end
+
+  def with_no_position
+    return unless block_given?
+    if session.character.position.blank?
+      yield
+    else
+      warning NO_POSITION_REQUIRED
     end
   end
 
