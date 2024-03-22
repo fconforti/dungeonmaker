@@ -7,13 +7,13 @@ class EnterCommand < BaseCommand
     with_account do
       with_character do
         with_no_position do
-          if dungeon = session.account.dungeons.find_by_name(argument)
-            if room = dungeon.base_room
+          if (dungeon = session.account.dungeons.find_by(name: argument))
+            if (room = dungeon.base_room)
               session.character.create_position(
                 account: session.account,
                 character: session.character,
-                dungeon: dungeon,
-                room: room
+                dungeon:,
+                room:
               )
               success "You have entered the #{dungeon.name} dungeon. Good luck!"
             else
@@ -21,10 +21,9 @@ class EnterCommand < BaseCommand
             end
           else
             invalid_argument(argument)
-          end    
+          end
         end
       end
     end
   end
-
 end

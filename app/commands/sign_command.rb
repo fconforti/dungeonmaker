@@ -11,6 +11,7 @@ class SignCommand < BaseCommand
 
   def run
     return invalid_argument(argument) unless ARGUMENTS.include?(argument)
+
     send argument
   end
 

@@ -17,7 +17,7 @@ class Room < ApplicationRecord
   end
 
   with_options inverse_of: :room, dependent: :restrict_with_exception do
-    has_many :character_positions    
+    has_many :character_positions
   end
 
   validates :name, presence: true, uniqueness: true

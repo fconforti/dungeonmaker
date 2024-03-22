@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :room do
     account
     dungeon
-    sequence(:name) { |n| "dungeon #{n}" }
+    sequence(:name) { |n| "room #{n}" }
   end
 end

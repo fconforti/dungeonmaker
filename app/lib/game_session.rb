@@ -3,7 +3,7 @@
 class GameSession
   attr_accessor :socket, :account, :character, :mode
 
-  def initialize(socket, account=nil, character=nil, mode=:play)
+  def initialize(socket, account = nil, character = nil, mode = :play)
     @socket = socket
     @account = account
     @character = character
@@ -28,8 +28,9 @@ class GameSession
   end
 
   private
+
   def welcome_user
     font = TTY::Font.new(:doom)
-    socket.puts font.write("DUNGEON MAKER").colorize(:green)
+    socket.puts font.write('DUNGEON MAKER').colorize(:green)
   end
 end

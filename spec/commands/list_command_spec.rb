@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ListCommand do
-  let(:socket) { instance_double(TCPSocket) }
+  let!(:socket) { instance_double(TCPSocket) }
 
   before do
     allow(socket).to receive(:puts)
@@ -13,7 +13,7 @@ RSpec.describe ListCommand do
   describe '#run' do
     context "with 'characters' argument" do
       context 'without a current account' do
-        let(:session) { GameSession.new(socket) }
+        let!(:session) { GameSession.new(socket) }
 
         before do
           described_class.new('characters', session).run
@@ -25,8 +25,8 @@ RSpec.describe ListCommand do
       end
 
       context 'with a current account' do
-        let(:account) { create(:account) }
-        let(:session) { GameSession.new(socket, account) }
+        let!(:account) { create(:account) }
+        let!(:session) { GameSession.new(socket, account) }
 
         context 'without characters' do
           before do
@@ -60,7 +60,7 @@ RSpec.describe ListCommand do
 
     context "with 'dungeons' argument" do
       context 'without a current account' do
-        let(:session) { GameSession.new(socket) }
+        let!(:session) { GameSession.new(socket) }
 
         before do
           described_class.new('dungeons', session).run
@@ -72,8 +72,8 @@ RSpec.describe ListCommand do
       end
 
       context 'with a current account' do
-        let(:account) { create(:account) }
-        let(:session) { GameSession.new(socket, account) }
+        let!(:account) { create(:account) }
+        let!(:session) { GameSession.new(socket, account) }
 
         context 'without dungeons' do
           before do

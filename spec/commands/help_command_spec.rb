@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe HelpCommand do
-  let(:socket) { instance_double(TCPSocket) }
-  let(:session) { GameSession.new(socket) }
+  let!(:socket) { instance_double(TCPSocket) }
+  let!(:session) { GameSession.new(socket) }
 
   before do
     allow(socket).to receive(:puts)

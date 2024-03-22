@@ -5,6 +5,7 @@ class ModeCommand < BaseCommand
 
   def run
     return invalid_argument(argument) unless ARGUMENTS.include?(argument)
+
     session.mode = argument
     success "Game mode changed: #{session.mode}"
   end

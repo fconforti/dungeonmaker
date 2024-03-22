@@ -18,13 +18,13 @@ class BaseCommand
     print_prompt(prompt)
     list_collection(collection)
     print_cursor
-    collection[get_user_input.to_i - 1]
+    collection[user_input.to_i - 1]
   end
 
   def ask(prompt)
     print_prompt(prompt)
     print_cursor
-    get_user_input
+    user_input
   end
 
   private
@@ -37,7 +37,7 @@ class BaseCommand
     session.socket.print '> '
   end
 
-  def get_user_input
+  def user_input
     session.socket.gets.chomp
   end
 
@@ -49,7 +49,7 @@ class BaseCommand
   end
 
   def invalid_argument(argument)
-    argument_desc = argument.blank? ? '<empty>' : argument
+    argument_desc = (argument.presence || '<empty>')
     session.socket.puts
     session.socket.puts "Invalid argument: #{argument_desc}".colorize(:red)
   end
@@ -82,6 +82,7 @@ class BaseCommand
 
   def with_no_account
     return unless block_given?
+
     if session.account.blank?
       yield
     else
@@ -91,6 +92,7 @@ class BaseCommand
 
   def with_account
     return unless block_given?
+
     if session.account.present?
       yield
     else
@@ -100,6 +102,7 @@ class BaseCommand
 
   def with_character
     return unless block_given?
+
     if session.character.present?
       yield
     else
@@ -109,11 +112,11 @@ class BaseCommand
 
   def with_no_position
     return unless block_given?
+
     if session.character.position.blank?
       yield
     else
       warning NO_POSITION_REQUIRED
     end
   end
-
 end
