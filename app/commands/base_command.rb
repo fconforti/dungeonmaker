@@ -6,6 +6,7 @@ class BaseCommand
   NO_ACCOUNT_REQUIRED = 'You need to sign out before continuing.'
   CHARACTER_REQUIRED = 'You need to choose a character first.'
   NO_POSITION_REQUIRED = 'You need to escape the current dungeon first!'
+  POSITION_REQUIRED = 'You need to enter a dungeon first!'
 
   attr_reader :argument, :session
 
@@ -80,21 +81,11 @@ class BaseCommand
     session.socket.puts message.colorize(:red)
   end
 
-  def with_no_account
-    return unless block_given?
-
-    if session.account.blank?
-      yield
-    else
-      warning NO_ACCOUNT_REQUIRED
-    end
-  end
-
   def with_account
     return unless block_given?
 
-    if session.account.present?
-      yield
+    if account = session.account
+      yield account
     else
       warning ACCOUNT_REQUIRED
     end
@@ -103,10 +94,30 @@ class BaseCommand
   def with_character
     return unless block_given?
 
-    if session.character.present?
-      yield
+    if character = session.character
+      yield character
     else
       warning CHARACTER_REQUIRED
+    end
+  end
+
+  def with_position
+    return unless block_given?
+
+    if position = session.character.position
+      yield position
+    else
+      warning POSITION_REQUIRED
+    end
+  end
+
+  def with_no_account
+    return unless block_given?
+
+    if session.account.blank?
+      yield
+    else
+      warning NO_ACCOUNT_REQUIRED
     end
   end
 
@@ -119,4 +130,5 @@ class BaseCommand
       warning NO_POSITION_REQUIRED
     end
   end
+
 end
