@@ -6,9 +6,8 @@ class CreateExits < ActiveRecord::Migration[7.0]
       t.belongs_to :account, null: false, foreign_key: true
       t.belongs_to :dungeon, null: false, foreign_key: true
       t.belongs_to :from_room, null: false, foreign_key: { to_table: :rooms }
-      t.string :from_direction, null: false
       t.belongs_to :to_room, null: false, foreign_key: { to_table: :rooms }
-      t.string :to_direction, null: false
+      t.string :direction, null: false
       t.timestamps
     end
   end

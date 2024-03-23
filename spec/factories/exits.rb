@@ -6,7 +6,6 @@ FactoryBot.define do
     dungeon
     association :from_room, factory: :room
     association :to_room, factory: :room
-    from_direction { 'north' }
-    to_direction { 'south' }
+    direction { 'north' }
   end
 end

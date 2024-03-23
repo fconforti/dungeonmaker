@@ -3,7 +3,19 @@
 class Exit < ApplicationRecord
   include Print
 
-  DIRECTIONS=%w[north east south west].freeze
+  NORTH='north'
+  EAST='east'
+  SOUTH='south'
+  WEST='west'
+
+  DIRECTIONS=[NORTH,EAST,SOUTH,WEST].freeze
+
+  INVERTED_DIRECTIONS={
+    NORTH => SOUTH,
+    EAST => WEST,
+    SOUTH => NORTH,
+    WEST => EAST
+  }.freeze
 
   def name
     "From #{from_room.name} to #{to_room.name}"
@@ -19,26 +31,35 @@ class Exit < ApplicationRecord
     belongs_to :to_room, class_name: 'Room'
   end
 
-  validates :from_direction, presence: true, inclusion: { in: DIRECTIONS }
-  validates :to_direction, presence: true, inclusion: { in: DIRECTIONS }
-  validate :from_direction_doesn_not_overlap, if: :from_room
-  validate :to_direction_doesn_not_overlap, if: :to_room
+  validates :direction, presence: true, inclusion: { in: DIRECTIONS }
+  
+  validate :no_from_room_exit, if: :from_room
+  validate :no_from_room_entrance, if: :from_room
+  validate :no_to_room_exit, if: :to_room
+  validate :no_to_room_entrance, if: :to_room
 
   private
-  def from_direction_doesn_not_overlap
-
-    if from_room.exits.exists?(from_direction: from_direction)
-      errors.add(:from_direction, "overlaps with an existing exit in #{from_room.name}")
-    elsif from_room.entrances.exists?(to_direction: from_direction)
-      errors.add(:from_direction, "overlaps with an existing entrance in #{from_room.name}")
+  def no_from_room_exit
+    if from_room.exits.exists?(direction: direction)
+      errors.add(:direction, "overlaps with an existing exit in #{from_room.name}")
     end
   end
 
-  def to_direction_doesn_not_overlap
-    if to_room.entrances.exists?(to_direction: to_direction)
-      errors.add(:to_direction, "overlaps with an existing entrance in #{to_room.name}")
-    elsif to_room.exits.exists?(from_direction: to_direction)
-      errors.add(:to_direction, "overlaps with an existing exit in #{to_room.name}")
+  def no_from_room_entrance
+    if from_room.entrances.exists?(direction: INVERTED_DIRECTIONS[direction])
+      errors.add(:direction, "overlaps with an existing entrance in #{from_room.name}")
+    end
+  end
+
+  def no_to_room_exit
+    if to_room.exits.exists?(direction: INVERTED_DIRECTIONS[direction])
+      errors.add(:direction, "overlaps with an existing exit in #{to_room.name}")
+    end
+  end
+
+  def no_to_room_entrance
+    if to_room.entrances.exists?(direction: direction)
+      errors.add(:direction, "overlaps with an existing entrance in #{to_room.name}")
     end
   end
 

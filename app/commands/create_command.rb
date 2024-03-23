@@ -42,9 +42,8 @@ class CreateCommand < BaseCommand
     model.account = session.account
     model.dungeon = select('Choose a dungeon:', session.account.dungeons)
     model.from_room = select('From room:', session.account.rooms)
-    model.from_direction = ask('Choose a direction:')
     model.to_room = select('To room:', session.account.rooms)
-    model.to_direction = ask('Choose a direction:')
+    model.direction = ask('Choose a direction:')
     model.save ? created_message(model) : error_messages(model)
   end
 end

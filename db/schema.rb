@@ -83,9 +83,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_125252) do
     t.bigint "account_id", null: false
     t.bigint "dungeon_id", null: false
     t.bigint "from_room_id", null: false
-    t.string "from_direction", null: false
     t.bigint "to_room_id", null: false
-    t.string "to_direction", null: false
+    t.string "direction", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_exits_on_account_id"
