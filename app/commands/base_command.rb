@@ -29,7 +29,6 @@ class BaseCommand
   end
 
   private
-
   def print_prompt(prompt)
     session.socket.puts prompt.colorize(:light_blue)
   end

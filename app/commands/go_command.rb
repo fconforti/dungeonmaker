@@ -8,9 +8,9 @@ class GoCommand < BaseCommand
     with_account do
       with_character do
         with_position do |position|
-          if (exit = position.room.exits.find_by(from_direction: argument))
+          if (exit = position.room.exits.find_by(direction: argument))
             position.update(room: exit.to_room)
-          elsif (entrance = position.room.entrances.find_by(to_direction: argument))
+          elsif (entrance = position.room.entrances.find_by(direction: Exit::INVERTED_DIRECTIONS[argument]))
             position.update(room: entrance.from_room)
           else
             warning "There are no exits or entrances at the #{argument}"
