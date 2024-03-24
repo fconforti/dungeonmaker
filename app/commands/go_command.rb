@@ -13,7 +13,7 @@ class GoCommand < BaseCommand
           elsif (entrance = position.room.entrances.find_by(direction: Exit::INVERTED_DIRECTIONS[argument]))
             position.update(room: entrance.from_room)
           else
-            warning "There are no exits or entrances at the #{argument}"
+            warning "There are no exits nor entrances at the #{argument}"
           end
         end
       end
