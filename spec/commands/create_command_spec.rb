@@ -63,10 +63,9 @@ RSpec.describe CreateCommand do
     end
 
     context 'with a current account' do
-      
       before do
         session.account = account
-      end 
+      end
 
       context "with 'character' argument" do
         context 'with valid inputs' do
@@ -76,15 +75,15 @@ RSpec.describe CreateCommand do
           end
 
           it 'is expected to prompt the user to choose a race' do
-            expect(socket).to have_received(:puts).with('Choose a race:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Choose a race:'.colorize(:magenta))
           end
 
           it 'is expected to prompt the user to choose a klass' do
-            expect(socket).to have_received(:puts).with('Choose a class:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Choose a class:'.colorize(:magenta))
           end
 
           it 'is expected to prompt the user to choose a name' do
-            expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:magenta))
           end
 
           it 'is expected to print a success message' do
@@ -146,7 +145,7 @@ RSpec.describe CreateCommand do
           end
 
           it 'is expected to prompt the user to choose a name' do
-            expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:magenta))
           end
 
           it 'is expected to print a success message' do
@@ -186,11 +185,11 @@ RSpec.describe CreateCommand do
           end
 
           it 'is expected to prompt the user to choose a dungeon' do
-            expect(socket).to have_received(:puts).with('Choose a dungeon:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Choose a dungeon:'.colorize(:magenta))
           end
 
           it 'is expected to prompt the user to choose a name' do
-            expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:magenta))
           end
 
           it 'is expected to print a success message' do

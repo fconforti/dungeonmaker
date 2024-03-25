@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ChatServer
-
   def initialize
     @sessions = []
   end
@@ -10,19 +9,19 @@ class ChatServer
     @sessions << session
   end
 
+  def remove_session(session)
+    @sessions.delete(session)
+  end
+
   def say(character, room, message)
-    room_characters = room.characters - [character]
-    sockets(room_characters).each do |socket|
-      socket.puts "[#{character.name}] #{message}"
+    sockets(room.characters).each do |socket|
+      socket.puts "[#{character.name}] #{message}".colorize(:light_blue)
     end
   end
 
   def sockets(characters)
     @sessions.select do |session|
       characters.include? session.character
-    end.map do |session|
-      session.socket
-    end
+    end.map(&:socket)
   end
-
 end

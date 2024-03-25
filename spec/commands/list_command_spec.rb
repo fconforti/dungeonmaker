@@ -62,7 +62,6 @@ RSpec.describe ListCommand do
 
     context "with 'dungeons' argument" do
       context 'without a current account' do
-
         before do
           described_class.new('dungeons', session).run
         end
@@ -77,7 +76,7 @@ RSpec.describe ListCommand do
 
         before do
           session.account = account
-        end        
+        end
 
         context 'without dungeons' do
           before do

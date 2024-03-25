@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :character_position do
+    account
     character
     dungeon
     room

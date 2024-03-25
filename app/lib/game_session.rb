@@ -5,12 +5,14 @@ class GameSession
 
   def initialize(socket, chat_server = nil)
     @socket = socket
+    return unless chat_server
+
+    chat_server.add_session(self)
     @chat_server = chat_server
   end
 
   def play
     welcome_user
-    add_to_chat
     prompt_command
   end
 
@@ -21,23 +23,21 @@ class GameSession
     socket.puts font.write('DUNGEON MAKER').colorize(:green)
   end
 
-  def add_to_chat
-    chat_server.add_session(self)
-  end
-
   def prompt_command
     loop do
-      socket.puts
-      socket.print '> '
       input = socket.gets.chomp
-      command_name, argument = input.split
-      # begin
-      command = Object.const_get("#{command_name.classify}Command")
-      command.new(argument, self).run
-      break if socket.closed?
-      # rescue NameError
-      #   socket.puts "Please check your input. Type 'help' for the command reference.".colorize(:red)
-      # end
+      command_name = input.split[0]
+      argument = input.split[1..].join(' ')
+      begin
+        command = Object.const_get("#{command_name.classify}Command")
+        command.new(argument, self).run
+        if socket.closed?
+          chat_server.remove_session(self)
+          break
+        end
+      rescue NameError
+        socket.puts "Please check your input. Type 'help' for the command reference.".colorize(:red)
+      end
     end
   end
 end

@@ -46,7 +46,6 @@ RSpec.describe GoCommand do
         end
 
         context 'without a position' do
-
           before do
             described_class.new('north', session).run
           end
@@ -57,54 +56,54 @@ RSpec.describe GoCommand do
         end
 
         context 'with a valid position' do
-
-          let!(:dungeon) { create :dungeon, account: account }
-          let!(:room_01) { create :room, dungeon: dungeon, account: account }
+          let!(:dungeon) { create(:dungeon, account:) }
+          let!(:room_02) { create(:room, dungeon:, account:) }
+          let!(:room_03) { create(:room, dungeon:, account:) }
+          let!(:exit_0102) do
+            create(:exit, dungeon:, from_room: room_01, to_room: room_02, direction: 'north', account:)
+          end
+          let!(:exit_0203) do
+            create(:exit, dungeon:, from_room: room_02, to_room: room_03, direction: 'east', account:)
+          end
+          let!(:room_01) { create(:room, dungeon:, account:) }
 
           before do
             EnterCommand.new(dungeon.name, session).run
           end
 
-          let!(:room_02) { create :room, dungeon: dungeon, account: account }
-          let!(:room_03) { create :room, dungeon: dungeon, account: account }
-          let!(:exit_0102) { create :exit, dungeon: dungeon, from_room: room_01, to_room: room_02, direction: 'north', account: account}
-          let!(:exit_0203) { create :exit, dungeon: dungeon, from_room: room_02, to_room: room_03, direction: 'east', account: account}
-
-          context "with invalid direction" do
+          context 'with invalid direction' do
             before do
               described_class.new('south', session).run
             end
 
             it 'is expected to show the user a warning message (no exits nor entrances)' do
-              expect(socket).to have_received(:puts).with("There are no exits nor entrances at the south".colorize(:yellow))
-            end  
+              expect(socket).to have_received(:puts).with('There are no exits nor entrances at the south'.colorize(:yellow))
+            end
           end
 
-          context "with valid directions (exits)" do
+          context 'with valid directions (exits)' do
             before do
               described_class.new('north', session).run
               described_class.new('east', session).run
             end
-  
+
             it 'is expected to chage the character position' do
               expect(character.position.room).to eq(room_03)
-            end  
+            end
           end
 
-          context "with valid directions (exits and entrance)" do
+          context 'with valid directions (exits and entrance)' do
             before do
               described_class.new('north', session).run
               described_class.new('east', session).run
               described_class.new('west', session).run
             end
-  
+
             it 'is expected to chage the character position' do
               expect(character.position.room).to eq(room_02)
-            end  
+            end
           end
-
         end
-
       end
     end
   end

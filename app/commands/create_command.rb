@@ -6,6 +6,7 @@ class CreateCommand < BaseCommand
   def run
     with_account do
       return invalid_argument(argument) unless ARGUMENTS.include?(argument)
+
       send argument
     end
   end

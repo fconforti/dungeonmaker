@@ -6,7 +6,7 @@ module Print
   included do
     def print(io)
       attributes.each do |key, value|
-        io.print "#{key}: ".colorize(:light_blue)
+        io.print "#{key}: ".colorize(:magenta)
         io.puts value
       end
     end

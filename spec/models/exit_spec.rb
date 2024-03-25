@@ -3,12 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Exit do
-  let!(:account) { create :account }
-  let!(:dungeon) { create :dungeon, account: account }
-  let!(:from_room) { create :room, dungeon: dungeon, account: account }
-  let!(:to_room) { create :room, dungeon: dungeon, account: account }
+  subject do
+    build(:exit, dungeon:, from_room:, to_room:, account:, direction: 'north')
+  end
 
-  subject { build :exit, dungeon: dungeon, from_room: from_room, to_room: to_room, account: account, direction: 'north' }
+  let!(:account) { create(:account) }
+  let!(:dungeon) { create(:dungeon, account:) }
+  let!(:from_room) { create(:room, dungeon:, account:) }
+  let!(:to_room) { create(:room, dungeon:, account:) }
 
   describe 'associations' do
     it { is_expected.to belong_to(:from_room).class_name('Room').inverse_of(:exits) }
@@ -19,54 +21,52 @@ RSpec.describe Exit do
     it { is_expected.to validate_presence_of(:direction) }
     it { is_expected.to validate_inclusion_of(:direction).in_array(Exit::DIRECTIONS) }
 
-    context "with an existing exit in the same from room and direction" do
-      let!(:exit) { create :exit, dungeon: dungeon, from_room: from_room, direction: 'north', account: account }
+    context 'with an existing exit in the same from room and direction' do
+      let!(:exit) { create(:exit, dungeon:, from_room:, direction: 'north', account:) }
 
       before do
-        subject.valid?        
+        subject.valid?
       end
 
-      it "is expected to be invalid (overlaps with an existing exit)" do
+      it 'is expected to be invalid (overlaps with an existing exit)' do
         expect(subject.errors[:direction]).to include("overlaps with an existing exit in #{from_room.name}")
       end
     end
 
-    context "with an existing entrance in the same from room and inverted direction" do
-      let!(:exit) { create :exit, dungeon: dungeon, to_room: from_room, direction: 'south', account: account }
+    context 'with an existing entrance in the same from room and inverted direction' do
+      let!(:exit) { create(:exit, dungeon:, to_room: from_room, direction: 'south', account:) }
 
       before do
-        subject.valid?        
+        subject.valid?
       end
 
-      it "is expected to be invalid (overlaps with an existing entrance)" do
+      it 'is expected to be invalid (overlaps with an existing entrance)' do
         expect(subject.errors[:direction]).to include("overlaps with an existing entrance in #{from_room.name}")
       end
     end
 
-    context "with an existing exit in the same to room and inverted direction" do
-      let!(:exit) { create :exit, dungeon: dungeon, from_room: to_room, direction: 'south', account: account }
+    context 'with an existing exit in the same to room and inverted direction' do
+      let!(:exit) { create(:exit, dungeon:, from_room: to_room, direction: 'south', account:) }
 
       before do
-        subject.valid?        
+        subject.valid?
       end
 
-      it "is expected to be invalid (overlaps with an existing exit)" do
+      it 'is expected to be invalid (overlaps with an existing exit)' do
         expect(subject.errors[:direction]).to include("overlaps with an existing exit in #{to_room.name}")
       end
     end
 
-    context "with an existing entrance in the same to room and direction" do
-      let!(:exit) { create :exit, dungeon: dungeon, to_room: to_room, direction: 'north', account: account }
+    context 'with an existing entrance in the same to room and direction' do
+      let!(:exit) { create(:exit, dungeon:, to_room:, direction: 'north', account:) }
 
       before do
-        subject.valid?        
+        subject.valid?
       end
 
-      it "is expected to be invalid (overlaps with an existing entrance)" do
+      it 'is expected to be invalid (overlaps with an existing entrance)' do
         expect(subject.errors[:direction]).to include("overlaps with an existing entrance in #{to_room.name}")
       end
     end
-
-
   end
 end

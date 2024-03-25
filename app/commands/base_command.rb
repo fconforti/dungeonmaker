@@ -18,23 +18,18 @@ class BaseCommand
   def select(prompt, collection)
     print_prompt(prompt)
     list_collection(collection)
-    print_cursor
     collection[user_input.to_i - 1]
   end
 
   def ask(prompt)
     print_prompt(prompt)
-    print_cursor
     user_input
   end
 
   private
-  def print_prompt(prompt)
-    session.socket.puts prompt.colorize(:light_blue)
-  end
 
-  def print_cursor
-    session.socket.print '> '
+  def print_prompt(prompt)
+    session.socket.puts prompt.colorize(:magenta)
   end
 
   def user_input
@@ -43,19 +38,17 @@ class BaseCommand
 
   def list_collection(collection)
     collection.each_with_index do |model, index|
-      session.socket.print "[#{index + 1}] ".colorize(:light_blue)
+      session.socket.print "[#{index + 1}] ".colorize(:magenta)
       session.socket.puts model.name
     end
   end
 
   def invalid_argument(argument)
     argument_desc = (argument.presence || '<empty>')
-    session.socket.puts
     session.socket.puts "Invalid argument: #{argument_desc}".colorize(:red)
   end
 
   def error_messages(model)
-    session.socket.puts
     error SOMETHING_WENT_WRONG
     model.errors.full_messages.each do |error|
       error error
@@ -63,7 +56,6 @@ class BaseCommand
   end
 
   def created_message(model)
-    session.socket.puts
     session.socket.puts "Your #{model.class.name.humanize.downcase} has been created!".colorize(:green)
     model.print(session.socket)
   end
@@ -83,7 +75,7 @@ class BaseCommand
   def with_account
     return unless block_given?
 
-    if account = session.account
+    if (account = session.account)
       yield account
     else
       warning ACCOUNT_REQUIRED
@@ -93,7 +85,7 @@ class BaseCommand
   def with_character
     return unless block_given?
 
-    if character = session.character
+    if (character = session.character)
       yield character
     else
       warning CHARACTER_REQUIRED
@@ -103,7 +95,7 @@ class BaseCommand
   def with_position
     return unless block_given?
 
-    if position = session.character.position
+    if (position = session.character.position)
       yield position
     else
       warning POSITION_REQUIRED
@@ -129,5 +121,4 @@ class BaseCommand
       warning NO_POSITION_REQUIRED
     end
   end
-
 end

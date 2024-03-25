@@ -21,15 +21,15 @@ RSpec.describe SignCommand do
           end
 
           it 'is expected to prompt the user to enter email' do
-            expect(socket).to have_received(:puts).with('Enter your email:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Enter your email:'.colorize(:magenta))
           end
 
           it 'is expected to prompt the user to choose a password' do
-            expect(socket).to have_received(:puts).with('Choose a password:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Choose a password:'.colorize(:magenta))
           end
 
           it 'is expected to prompt the user to confirm password' do
-            expect(socket).to have_received(:puts).with('Confirm password:'.colorize(:light_blue))
+            expect(socket).to have_received(:puts).with('Confirm password:'.colorize(:magenta))
           end
 
           it 'is expected to show the user a success message' do
@@ -76,9 +76,6 @@ RSpec.describe SignCommand do
 
         before do
           session.account = account
-        end        
-
-        before do
           described_class.new('up', session).run
         end
 
@@ -95,7 +92,6 @@ RSpec.describe SignCommand do
         end
 
         context 'without a current account' do
-
           context 'with valid inputs' do
             before do
               allow(socket).to receive(:gets).and_return('filippo@example.com', 'secret')
@@ -103,11 +99,11 @@ RSpec.describe SignCommand do
             end
 
             it 'is expected to prompt the user to enter email' do
-              expect(socket).to have_received(:puts).with('Enter your email:'.colorize(:light_blue))
+              expect(socket).to have_received(:puts).with('Enter your email:'.colorize(:magenta))
             end
 
             it 'is expected to prompt the user to enter password' do
-              expect(socket).to have_received(:puts).with('Enter your password:'.colorize(:light_blue))
+              expect(socket).to have_received(:puts).with('Enter your password:'.colorize(:magenta))
             end
 
             it 'is expected to show the user a success message' do
@@ -121,9 +117,6 @@ RSpec.describe SignCommand do
 
           before do
             session.account = account
-          end
-
-          before do
             described_class.new('in', session).run
           end
 
@@ -141,7 +134,6 @@ RSpec.describe SignCommand do
         end
 
         context 'without a current account' do
-
           before do
             described_class.new('out', session).run
           end
@@ -152,12 +144,8 @@ RSpec.describe SignCommand do
         end
 
         context 'with a current account' do
-          
           before do
             session.account = account
-          end
-
-          before do
             described_class.new('out', session).run
           end
 

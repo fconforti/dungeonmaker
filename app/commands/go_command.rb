@@ -5,6 +5,7 @@ class GoCommand < BaseCommand
 
   def run
     return invalid_argument(argument) unless Exit::DIRECTIONS.include?(argument)
+
     with_account do
       with_character do
         with_position do |position|

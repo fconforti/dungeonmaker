@@ -9,9 +9,6 @@ RSpec.describe ChooseCommand do
 
   before do
     session.account = account
-  end
-
-  before do
     allow(socket).to receive(:puts)
   end
 
