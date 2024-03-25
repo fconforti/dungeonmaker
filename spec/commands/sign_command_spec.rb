@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe SignCommand do
   let!(:socket) { instance_double(TCPSocket) }
+  let!(:session) { GameSession.new(socket) }
 
   before do
     allow(socket).to receive(:puts)
@@ -13,8 +14,6 @@ RSpec.describe SignCommand do
   describe '#run' do
     context "with 'up' argument" do
       context 'without a current account' do
-        let!(:session) { GameSession.new(socket) }
-
         context 'with valid inputs' do
           before do
             allow(socket).to receive(:gets).and_return('filippo@example.com', 'secret', 'secret')
@@ -74,7 +73,10 @@ RSpec.describe SignCommand do
 
       context 'with a current account' do
         let!(:account) { create(:account) }
-        let!(:session) { GameSession.new(socket, account) }
+
+        before do
+          session.account = account
+        end        
 
         before do
           described_class.new('up', session).run
@@ -93,7 +95,6 @@ RSpec.describe SignCommand do
         end
 
         context 'without a current account' do
-          let!(:session) { GameSession.new(socket) }
 
           context 'with valid inputs' do
             before do
@@ -117,7 +118,10 @@ RSpec.describe SignCommand do
 
         context 'with a current account' do
           let!(:account) { create(:account) }
-          let!(:session) { GameSession.new(socket, account) }
+
+          before do
+            session.account = account
+          end
 
           before do
             described_class.new('in', session).run
@@ -137,7 +141,6 @@ RSpec.describe SignCommand do
         end
 
         context 'without a current account' do
-          let!(:session) { GameSession.new(socket) }
 
           before do
             described_class.new('out', session).run
@@ -149,7 +152,10 @@ RSpec.describe SignCommand do
         end
 
         context 'with a current account' do
-          let!(:session) { GameSession.new(socket, account) }
+          
+          before do
+            session.account = account
+          end
 
           before do
             described_class.new('out', session).run

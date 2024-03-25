@@ -3,6 +3,8 @@
 class Character < ApplicationRecord
   include Print
 
+  attr_accessor :socket
+
   before_create :resolve_hp
 
   with_options inverse_of: :characters do

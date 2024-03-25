@@ -7,7 +7,7 @@ class EnterCommand < BaseCommand
     with_account do
       with_character do
         with_no_position do
-          if (dungeon = session.account.dungeons.find_by(name: argument))
+          if (dungeon = Dungeon.find_by(name: argument))
             if (room = dungeon.base_room)
               session.character.create_position(
                 account: session.account,

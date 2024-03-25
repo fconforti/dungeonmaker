@@ -1,17 +1,31 @@
 # frozen_string_literal: true
 
 class GameSession
-  attr_accessor :socket, :account, :character, :mode
+  attr_accessor :socket, :chat_server, :account, :character, :mode
 
-  def initialize(socket, account = nil, character = nil, mode = :play)
+  def initialize(socket, chat_server = nil)
     @socket = socket
-    @account = account
-    @character = character
-    @mode = mode
+    @chat_server = chat_server
   end
 
   def play
     welcome_user
+    add_to_chat
+    prompt_command
+  end
+
+  private
+
+  def welcome_user
+    font = TTY::Font.new(:doom)
+    socket.puts font.write('DUNGEON MAKER').colorize(:green)
+  end
+
+  def add_to_chat
+    chat_server.add_session(self)
+  end
+
+  def prompt_command
     loop do
       socket.puts
       socket.print '> '
@@ -25,12 +39,5 @@ class GameSession
       #   socket.puts "Please check your input. Type 'help' for the command reference.".colorize(:red)
       # end
     end
-  end
-
-  private
-
-  def welcome_user
-    font = TTY::Font.new(:doom)
-    socket.puts font.write('DUNGEON MAKER').colorize(:green)
   end
 end

@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe CreateCommand do
   let!(:socket) { instance_double(TCPSocket) }
+  let!(:session) { GameSession.new(socket) }
   let!(:account) { create(:account) }
   let!(:dungeon) { create(:dungeon, account:) }
 
@@ -16,8 +17,6 @@ RSpec.describe CreateCommand do
 
   describe '#run' do
     context 'without a current account' do
-      let!(:session) { GameSession.new(socket) }
-
       context "with 'character' argument" do
         before do
           allow(socket).to receive(:gets)
@@ -64,7 +63,10 @@ RSpec.describe CreateCommand do
     end
 
     context 'with a current account' do
-      let!(:session) { GameSession.new(socket, account) }
+      
+      before do
+        session.account = account
+      end 
 
       context "with 'character' argument" do
         context 'with valid inputs' do

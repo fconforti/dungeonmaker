@@ -10,6 +10,7 @@ RSpec.describe Room do
     it { is_expected.to belong_to(:dungeon).inverse_of(:rooms) }
     it { is_expected.to have_many(:exits).inverse_of(:from_room).with_foreign_key(:from_room_id) }
     it { is_expected.to have_many(:entrances).class_name('Exit').inverse_of(:to_room).with_foreign_key(:to_room_id) }
+    it { is_expected.to have_many(:characters).through(:character_positions) }
   end
 
   describe 'validations' do

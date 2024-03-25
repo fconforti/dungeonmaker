@@ -5,7 +5,11 @@ require 'rails_helper'
 RSpec.describe ChooseCommand do
   let!(:socket) { instance_double(TCPSocket) }
   let!(:account) { create(:account) }
-  let!(:session) { GameSession.new(socket, account) }
+  let!(:session) { GameSession.new(socket) }
+
+  before do
+    session.account = account
+  end
 
   before do
     allow(socket).to receive(:puts)
