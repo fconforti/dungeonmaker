@@ -4,18 +4,9 @@ class BaseCommand
   include Interactor
 
   SOMETHING_WENT_WRONG = 'Ops... something went wrong'
-  ACCOUNT_REQUIRED = 'You need to sign in or sign up before continuing.'
-  NO_ACCOUNT_REQUIRED = 'You need to sign out before continuing.'
   CHARACTER_REQUIRED = 'You need to choose a character first.'
   NO_POSITION_REQUIRED = 'You need to escape the current dungeon first!'
   POSITION_REQUIRED = 'You need to enter a dungeon first!'
-
-  # attr_reader :argument, :context.session
-
-  # def initialize(argument, context.session)
-  #   @argument = argument
-  #   @context.session = context.session
-  # end
 
   def select(prompt, collection)
     print_prompt(prompt)
@@ -117,14 +108,6 @@ class BaseCommand
     else
       warning NO_POSITION_REQUIRED
     end
-  end
-
-  def require_account!
-    context.fail!(message: ACCOUNT_REQUIRED) unless context.session.account
-  end
-
-  def require_no_account!
-    context.fail!(message: NO_ACCOUNT_REQUIRED) if context.session.account
   end
 
 end

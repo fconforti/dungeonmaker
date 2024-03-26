@@ -24,7 +24,7 @@ RSpec.describe CreateCommand do
         end
 
         it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(CommandHooks::ACCOUNT_REQUIRED.colorize(:yellow))
         end
       end
 
@@ -35,7 +35,7 @@ RSpec.describe CreateCommand do
         end
 
         it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(CommandHooks::ACCOUNT_REQUIRED.colorize(:yellow))
         end
       end
 
@@ -46,7 +46,7 @@ RSpec.describe CreateCommand do
         end
 
         it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(CommandHooks::ACCOUNT_REQUIRED.colorize(:yellow))
         end
       end
 
@@ -57,7 +57,7 @@ RSpec.describe CreateCommand do
         end
 
         it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(CommandHooks::ACCOUNT_REQUIRED.colorize(:yellow))
         end
       end
     end

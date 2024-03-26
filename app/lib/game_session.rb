@@ -15,8 +15,6 @@ class GameSession
     prompt_command
   end
 
-  private
-
   def welcome_user
     font = TTY::Font.new(:doom)
     socket.puts font.write('DUNGEON MAKER').colorize(:green)
@@ -25,14 +23,10 @@ class GameSession
   def prompt_command
     loop do
       input = socket.gets.chomp
-      command_name = input.split[0]
+      name = input.split[0]
       argument = input.split[1..].join(' ')
       # begin
-      result = Object.const_get("#{command_name.classify}Command").call(argument:, session: self)
-
-      if result.failure?
-        socket.puts result.message.colorize(:red)
-      end
+      call_command(name, argument)
 
       if socket.closed?
         chat_server.remove_session(self)
@@ -42,5 +36,10 @@ class GameSession
       #   socket.puts "Please check your input. Type 'help' for the command reference.".colorize(:red)
       # end
     end
+  end
+
+  def call_command(name, argument)
+    context = Object.const_get("#{name.classify}Command").call(argument:, session: self)
+    socket.puts context.message.colorize(:red) if context.failure?
   end
 end

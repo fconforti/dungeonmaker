@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class SignCommand < BaseCommand
-  include Boom
-  
+class SignCommand < BaseCommand  
+  include CommandHooks
+
   ARGUMENTS = %[up in out].freeze
 
   SIGNED_UP = "Account created. You're now signed in."
@@ -12,7 +12,6 @@ class SignCommand < BaseCommand
   INVALID_EMAIL_OR_PASSWORD = 'Invalid email or password.'
 
   def call
-    puts "Call"
     send context.argument
   end
 
