@@ -6,7 +6,6 @@ class GameSession
   def initialize(socket, chat_server = nil)
     @socket = socket
     return unless chat_server
-
     chat_server.add_session(self)
     @chat_server = chat_server
   end
@@ -28,16 +27,20 @@ class GameSession
       input = socket.gets.chomp
       command_name = input.split[0]
       argument = input.split[1..].join(' ')
-      begin
-        command = Object.const_get("#{command_name.classify}Command")
-        command.new(argument, self).run
-        if socket.closed?
-          chat_server.remove_session(self)
-          break
-        end
-      rescue NameError
-        socket.puts "Please check your input. Type 'help' for the command reference.".colorize(:red)
+      # begin
+      result = Object.const_get("#{command_name.classify}Command").call(argument:, session: self)
+
+      if result.failure?
+        socket.puts result.message.colorize(:red)
       end
+
+      if socket.closed?
+        chat_server.remove_session(self)
+        break
+      end
+      # rescue NameError
+      #   socket.puts "Please check your input. Type 'help' for the command reference.".colorize(:red)
+      # end
     end
   end
 end

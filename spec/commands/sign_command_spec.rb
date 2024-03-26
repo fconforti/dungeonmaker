@@ -12,12 +12,22 @@ RSpec.describe SignCommand do
   end
 
   describe '#run' do
+    context "with an invalid argument" do
+      before do
+        described_class.call(argument: 'foo', session:)
+      end
+
+      it 'is expected to show the user a error message (invalid argument)' do
+        expect(socket).to have_received(:puts).with("Invalid argument: foo".colorize(:red))
+      end
+    end
+
     context "with 'up' argument" do
       context 'without a current account' do
         context 'with valid inputs' do
           before do
             allow(socket).to receive(:gets).and_return('filippo@example.com', 'secret', 'secret')
-            described_class.new('up', session).run
+            described_class.call(argument: 'up', session:)
           end
 
           it 'is expected to prompt the user to enter email' do
@@ -40,7 +50,7 @@ RSpec.describe SignCommand do
         context 'with invalid inputs (empty email)' do
           before do
             allow(socket).to receive(:gets).and_return('', 'secret', 'secret')
-            described_class.new('up', session).run
+            described_class.call(argument: 'up', session:)
           end
 
           it 'is expected to show the user an error message (something went wrong)' do
@@ -51,7 +61,7 @@ RSpec.describe SignCommand do
         context 'with invalid inputs (empty password)' do
           before do
             allow(socket).to receive(:gets).and_return('filippo@example.com', '', 'secret')
-            described_class.new('up', session).run
+            described_class.call(argument: 'up', session:)
           end
 
           it 'is expected to show the user an error message (something went wrong)' do
@@ -62,7 +72,7 @@ RSpec.describe SignCommand do
         context 'with invalid inputs (password confirmation not matching)' do
           before do
             allow(socket).to receive(:gets).and_return('filippo@example.com', 'secret', 'notmatching')
-            described_class.new('up', session).run
+            described_class.call(argument: 'up', session:)
           end
 
           it 'is expected to show the user an error message (something went wrong)' do
@@ -76,11 +86,11 @@ RSpec.describe SignCommand do
 
         before do
           session.account = account
-          described_class.new('up', session).run
+          described_class.call(argument: 'up', session:)
         end
 
-        it 'is expected to show the user a warning message (already signed in)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::NO_ACCOUNT_REQUIRED.colorize(:yellow))
+        it 'is expected to show the user a error message (already signed in)' do
+          expect(socket).to have_received(:puts).with(BaseCommand::NO_ACCOUNT_REQUIRED.colorize(:red))
         end
       end
     end
@@ -95,7 +105,7 @@ RSpec.describe SignCommand do
           context 'with valid inputs' do
             before do
               allow(socket).to receive(:gets).and_return('filippo@example.com', 'secret')
-              described_class.new('in', session).run
+              described_class.call(argument: 'in', session:)
             end
 
             it 'is expected to prompt the user to enter email' do
@@ -117,11 +127,11 @@ RSpec.describe SignCommand do
 
           before do
             session.account = account
-            described_class.new('in', session).run
+            described_class.call(argument: 'in', session:)
           end
 
-          it 'is expected to show the user a warning message (already signed in)' do
-            expect(socket).to have_received(:puts).with(BaseCommand::NO_ACCOUNT_REQUIRED.colorize(:yellow))
+          it 'is expected to show the user a error message (already signed in)' do
+            expect(socket).to have_received(:puts).with(BaseCommand::NO_ACCOUNT_REQUIRED.colorize(:red))
           end
         end
       end
@@ -135,18 +145,18 @@ RSpec.describe SignCommand do
 
         context 'without a current account' do
           before do
-            described_class.new('out', session).run
+            described_class.call(argument: 'out', session:)
           end
 
-          it 'is expected to show the user a warning message' do
-            expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+          it 'is expected to show the user a error message' do
+            expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:red))
           end
         end
 
         context 'with a current account' do
           before do
             session.account = account
-            described_class.new('out', session).run
+            described_class.call(argument: 'out', session:)
           end
 
           it 'is expected to show the user a success message' do

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BaseCommand
+  include Interactor
+
   SOMETHING_WENT_WRONG = 'Ops... something went wrong'
   ACCOUNT_REQUIRED = 'You need to sign in or sign up before continuing.'
   NO_ACCOUNT_REQUIRED = 'You need to sign out before continuing.'
@@ -8,12 +10,12 @@ class BaseCommand
   NO_POSITION_REQUIRED = 'You need to escape the current dungeon first!'
   POSITION_REQUIRED = 'You need to enter a dungeon first!'
 
-  attr_reader :argument, :session
+  # attr_reader :argument, :context.session
 
-  def initialize(argument, session)
-    @argument = argument
-    @session = session
-  end
+  # def initialize(argument, context.session)
+  #   @argument = argument
+  #   @context.session = context.session
+  # end
 
   def select(prompt, collection)
     print_prompt(prompt)
@@ -29,23 +31,18 @@ class BaseCommand
   private
 
   def print_prompt(prompt)
-    session.socket.puts prompt.colorize(:magenta)
+    context.session.socket.puts prompt.colorize(:magenta)
   end
 
   def user_input
-    session.socket.gets.chomp
+    context.session.socket.gets.chomp
   end
 
   def list_collection(collection)
     collection.each_with_index do |model, index|
-      session.socket.print "[#{index + 1}] ".colorize(:magenta)
-      session.socket.puts model.name
+      context.session.socket.print "[#{index + 1}] ".colorize(:magenta)
+      context.session.socket.puts model.name
     end
-  end
-
-  def invalid_argument(argument)
-    argument_desc = (argument.presence || '<empty>')
-    session.socket.puts "Invalid argument: #{argument_desc}".colorize(:red)
   end
 
   def error_messages(model)
@@ -56,26 +53,26 @@ class BaseCommand
   end
 
   def created_message(model)
-    session.socket.puts "Your #{model.class.name.humanize.downcase} has been created!".colorize(:green)
-    model.print(session.socket)
+    context.session.socket.puts "Your #{model.class.name.humanize.downcase} has been created!".colorize(:green)
+    model.print(context.session.socket)
   end
 
   def success(message)
-    session.socket.puts message.colorize(:green)
+    context.session.socket.puts message.colorize(:green)
   end
 
   def warning(message)
-    session.socket.puts message.colorize(:yellow)
+    context.session.socket.puts message.colorize(:yellow)
   end
 
   def error(message)
-    session.socket.puts message.colorize(:red)
+    context.session.socket.puts message.colorize(:red)
   end
 
   def with_account
     return unless block_given?
 
-    if (account = session.account)
+    if (account = context.session.account)
       yield account
     else
       warning ACCOUNT_REQUIRED
@@ -85,7 +82,7 @@ class BaseCommand
   def with_character
     return unless block_given?
 
-    if (character = session.character)
+    if (character = context.session.character)
       yield character
     else
       warning CHARACTER_REQUIRED
@@ -95,7 +92,7 @@ class BaseCommand
   def with_position
     return unless block_given?
 
-    if (position = session.character.position)
+    if (position = context.session.character.position)
       yield position
     else
       warning POSITION_REQUIRED
@@ -105,7 +102,7 @@ class BaseCommand
   def with_no_account
     return unless block_given?
 
-    if session.account.blank?
+    if context.session.account.blank?
       yield
     else
       warning NO_ACCOUNT_REQUIRED
@@ -115,10 +112,19 @@ class BaseCommand
   def with_no_position
     return unless block_given?
 
-    if session.character.position.blank?
+    if context.session.character.position.blank?
       yield
     else
       warning NO_POSITION_REQUIRED
     end
   end
+
+  def require_account!
+    context.fail!(message: ACCOUNT_REQUIRED) unless context.session.account
+  end
+
+  def require_no_account!
+    context.fail!(message: NO_ACCOUNT_REQUIRED) if context.session.account
+  end
+
 end
