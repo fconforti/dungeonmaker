@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class HelpCommand < BaseCommand
-  def run
-    session.socket.puts output.colorize(:green)
+  def call
+    context.session.socket.puts output.colorize(:green)
   end
 
   private

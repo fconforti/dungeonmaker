@@ -13,7 +13,7 @@ RSpec.describe HelpCommand do
   describe '.call' do
     context 'with no arguments' do
       before do
-        described_class.new('', session).run
+        session.call_command('help', '')
       end
 
       it 'is expected to succeed' do
