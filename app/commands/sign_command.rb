@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class SignCommand < BaseCommand  
-  include CommandHooks
-
   ARGUMENTS = %[up in out].freeze
 
   SIGNED_UP = "Account created. You're now signed in."
@@ -10,6 +8,8 @@ class SignCommand < BaseCommand
   SIGNED_OUT = "You're now signed out."
 
   INVALID_EMAIL_OR_PASSWORD = 'Invalid email or password.'
+
+  before :validate_argument!
 
   def call
     send context.argument

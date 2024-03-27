@@ -7,6 +7,8 @@ class BaseCommand
   CHARACTER_REQUIRED = 'You need to choose a character first.'
   NO_POSITION_REQUIRED = 'You need to escape the current dungeon first!'
   POSITION_REQUIRED = 'You need to enter a dungeon first!'
+  ACCOUNT_REQUIRED = 'You need to sign in or sign up before continuing.'
+  NO_ACCOUNT_REQUIRED = 'You need to sign out before continuing.'
 
   def select(prompt, collection)
     print_prompt(prompt)
@@ -108,6 +110,26 @@ class BaseCommand
     else
       warning NO_POSITION_REQUIRED
     end
+  end
+
+  def validate_argument!
+    return unless defined? self.class::ARGUMENTS
+    unless self.class::ARGUMENTS.include?(context.argument)
+      invalid_argument!(context.argument)
+    end
+  end
+
+  def invalid_argument!(argument)
+    argument = '<blank>' if argument.blank?
+    context.fail!(message: "Invalid argument: #{argument}")
+  end
+
+  def require_account!
+    context.fail!(message: ACCOUNT_REQUIRED) unless context.session.account
+  end
+
+  def require_no_account!
+    context.fail!(message: NO_ACCOUNT_REQUIRED) if context.session.account
   end
 
 end

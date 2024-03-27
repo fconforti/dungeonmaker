@@ -10,7 +10,7 @@ RSpec.describe ModeCommand do
     allow(socket).to receive(:puts)
   end
 
-  describe '#run' do
+  describe '.call' do
     context 'with no arguments' do
       before do
         described_class.new('', session).run

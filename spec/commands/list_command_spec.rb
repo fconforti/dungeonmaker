@@ -11,7 +11,7 @@ RSpec.describe ListCommand do
     allow(socket).to receive(:print)
   end
 
-  describe '#run' do
+  describe '.call' do
     context "with 'characters' argument" do
       context 'without a current account' do
         before do
@@ -19,7 +19,7 @@ RSpec.describe ListCommand do
         end
 
         it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(CommandHooks::ACCOUNT_REQUIRED.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
         end
       end
 
@@ -67,7 +67,7 @@ RSpec.describe ListCommand do
         end
 
         it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(CommandHooks::ACCOUNT_REQUIRED.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
         end
       end
 

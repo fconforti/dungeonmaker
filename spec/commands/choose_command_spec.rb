@@ -12,20 +12,20 @@ RSpec.describe ChooseCommand do
     allow(socket).to receive(:puts)
   end
 
-  describe '#run' do
+  describe '.call' do
     context 'with no arguments' do
       before do
-        described_class.new('', session).run
+        session.call_command('choose', '')
       end
 
       it 'is expected to show the user an error message (invalid argument)' do
-        expect(socket).to have_received(:puts).with('Invalid argument: <empty>'.colorize(:red))
+        expect(socket).to have_received(:puts).with('Invalid argument: <blank>'.colorize(:red))
       end
     end
 
     context 'with an invalid argument' do
       before do
-        described_class.new('foo', session).run
+        session.call_command('choose', 'foo')
       end
 
       it 'is expected to show the user an error message (invalid argument)' do
@@ -37,7 +37,7 @@ RSpec.describe ChooseCommand do
       let!(:character) { create(:character, account:, name: 'Lucy') }
 
       before do
-        described_class.new('Lucy', session).run
+        session.call_command('choose', 'Lucy')
       end
 
       it 'is expected to change game character' do

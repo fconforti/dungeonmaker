@@ -11,7 +11,7 @@ RSpec.describe SignCommand do
     allow(socket).to receive(:print)
   end
 
-  describe '#run' do
+  describe '.call' do
     context "with an invalid argument" do
       before do
         session.call_command('sign', 'foo')
@@ -90,7 +90,7 @@ RSpec.describe SignCommand do
         end
 
         it 'is expected to show the user a error message (already signed in)' do
-          expect(socket).to have_received(:puts).with(CommandHooks::NO_ACCOUNT_REQUIRED.colorize(:red))
+          expect(socket).to have_received(:puts).with(BaseCommand::NO_ACCOUNT_REQUIRED.colorize(:red))
         end
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe SignCommand do
           end
 
           it 'is expected to show the user a error message (already signed in)' do
-            expect(socket).to have_received(:puts).with(CommandHooks::NO_ACCOUNT_REQUIRED.colorize(:red))
+            expect(socket).to have_received(:puts).with(BaseCommand::NO_ACCOUNT_REQUIRED.colorize(:red))
           end
         end
       end
@@ -149,7 +149,7 @@ RSpec.describe SignCommand do
           end
 
           it 'is expected to show the user a error message' do
-            expect(socket).to have_received(:puts).with(CommandHooks::ACCOUNT_REQUIRED.colorize(:red))
+            expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:red))
           end
         end
 

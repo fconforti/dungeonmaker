@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 class ChooseCommand < BaseCommand
-  def run
-    with_account do
-      if (character = session.account.characters.find_by(name: argument))
-        session.character = character
-        success "You are now playing as #{session.character.name}."
-      else
-        invalid_argument(argument)
-      end
+
+  before :require_account!
+
+  def call
+    if (character = context.session.account.characters.find_by(name: context.argument))
+      context.session.character = character
+      success "You are now playing as #{character.name}."
+    else
+      invalid_argument!(context.argument)
     end
   end
 end
