@@ -15,7 +15,7 @@ RSpec.describe ListCommand do
     context "with 'characters' argument" do
       context 'without a current account' do
         before do
-          described_class.new('characters', session).run
+          session.call_command('list', 'characters')
         end
 
         it 'is expected to show the user a error message (account required)' do
@@ -32,7 +32,7 @@ RSpec.describe ListCommand do
 
         context 'without characters' do
           before do
-            described_class.new('characters', session).run
+            session.call_command('list', 'characters')
           end
 
           it 'is expected to show the user a error message (empty)' do
@@ -48,7 +48,7 @@ RSpec.describe ListCommand do
             3.times do |i|
               create(:character, name: "character #{i}", account:, race:, klass:)
             end
-            described_class.new('characters', session).run
+            session.call_command('list', 'characters')
           end
 
           it 'is expected to show the user the list of characters' do
@@ -63,7 +63,7 @@ RSpec.describe ListCommand do
     context "with 'dungeons' argument" do
       context 'without a current account' do
         before do
-          described_class.new('dungeons', session).run
+          session.call_command('list', 'dungeons')
         end
 
         it 'is expected to show the user a error message (account required)' do
@@ -80,7 +80,7 @@ RSpec.describe ListCommand do
 
         context 'without dungeons' do
           before do
-            described_class.new('dungeons', session).run
+            session.call_command('list', 'dungeons')
           end
 
           it 'is expected to show the user a error message (empty)' do
@@ -93,7 +93,7 @@ RSpec.describe ListCommand do
             3.times do |i|
               create(:dungeon, name: "dungeon #{i}", account:)
             end
-            described_class.new('dungeons', session).run
+            session.call_command('list', 'dungeons')
           end
 
           it 'is expected to show the user the list of dungeons' do
