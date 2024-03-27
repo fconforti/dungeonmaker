@@ -62,56 +62,6 @@ class BaseCommand
     context.session.socket.puts message.colorize(:red)
   end
 
-  def with_account
-    return unless block_given?
-
-    if (account = context.session.account)
-      yield account
-    else
-      warning ACCOUNT_REQUIRED
-    end
-  end
-
-  def with_character
-    return unless block_given?
-
-    if (character = context.session.character)
-      yield character
-    else
-      warning CHARACTER_REQUIRED
-    end
-  end
-
-  def with_position
-    return unless block_given?
-
-    if (position = context.session.character.position)
-      yield position
-    else
-      warning POSITION_REQUIRED
-    end
-  end
-
-  def with_no_account
-    return unless block_given?
-
-    if context.session.account.blank?
-      yield
-    else
-      warning NO_ACCOUNT_REQUIRED
-    end
-  end
-
-  def with_no_position
-    return unless block_given?
-
-    if context.session.character.position.blank?
-      yield
-    else
-      warning NO_POSITION_REQUIRED
-    end
-  end
-
   def validate_argument!
     return unless defined? self.class::ARGUMENTS
     unless self.class::ARGUMENTS.include?(context.argument)

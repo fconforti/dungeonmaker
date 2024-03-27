@@ -18,46 +18,15 @@ RSpec.describe CreateCommand do
   describe '.call' do
     context 'without a current account' do
       context "with 'character' argument" do
-        before do
-          allow(socket).to receive(:gets)
-          described_class.new('character', session).run
-        end
-
-        it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
-        end
-      end
-
-      context "with 'dungeon' argument" do
-        before do
-          allow(socket).to receive(:gets)
-          described_class.new('dungeon', session).run
-        end
-
-        it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
-        end
-      end
-
-      context "with 'room' argument" do
-        before do
-          allow(socket).to receive(:gets)
-          described_class.new('dungeon', session).run
-        end
-
-        it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
-        end
-      end
-
-      context "with 'exit' argument" do
-        before do
-          allow(socket).to receive(:gets)
-          described_class.new('dungeon', session).run
-        end
-
-        it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+        context 'with valid inputs' do
+          before do
+            allow(socket).to receive(:gets).and_return('1', '1', 'Lucy')
+            session.call_command('create', 'character')
+          end
+  
+          it 'is expected to show the user a error message (account required)' do
+            expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:red))
+          end  
         end
       end
     end
@@ -71,7 +40,7 @@ RSpec.describe CreateCommand do
         context 'with valid inputs' do
           before do
             allow(socket).to receive(:gets).and_return('1', '1', 'Lucy')
-            described_class.new('character', session).run
+            session.call_command('create', 'character')
           end
 
           it 'is expected to prompt the user to choose a race' do
@@ -94,7 +63,7 @@ RSpec.describe CreateCommand do
         context 'with invalid inputs (missing race)' do
           before do
             allow(socket).to receive(:gets).and_return('-1', '1', 'Lucy')
-            described_class.new('character', session).run
+            session.call_command('create', 'character')
           end
 
           it 'is expected to print an error message (Race must exist)' do
@@ -105,7 +74,7 @@ RSpec.describe CreateCommand do
         context 'with invalid inputs (missing class)' do
           before do
             allow(socket).to receive(:gets).and_return('1', '-1', 'Lucy')
-            described_class.new('character', session).run
+            session.call_command('create', 'character')
           end
 
           it 'is expected to print an error message (Klass must exist)' do
@@ -116,7 +85,7 @@ RSpec.describe CreateCommand do
         context 'with invalid inputs (missing name)' do
           before do
             allow(socket).to receive(:gets).and_return('1', '1', '')
-            described_class.new('character', session).run
+            session.call_command('create', 'character')
           end
 
           it 'is expected to print an error message (Name can\'t be blank)' do
@@ -128,7 +97,7 @@ RSpec.describe CreateCommand do
           before do
             create(:character, name: 'Lucy')
             allow(socket).to receive(:gets).and_return('1', '1', 'Lucy')
-            described_class.new('character', session).run
+            session.call_command('create', 'character')
           end
 
           it 'is expected to print an error message (Name has already been taken)' do
@@ -141,7 +110,7 @@ RSpec.describe CreateCommand do
         context 'with valid inputs' do
           before do
             allow(socket).to receive(:gets).and_return('Dark rooms')
-            described_class.new('dungeon', session).run
+            session.call_command('create', 'dungeon')
           end
 
           it 'is expected to prompt the user to choose a name' do
@@ -156,7 +125,7 @@ RSpec.describe CreateCommand do
         context 'with invalid inputs (missing name)' do
           before do
             allow(socket).to receive(:gets).and_return('')
-            described_class.new('dungeon', session).run
+            session.call_command('create', 'dungeon')
           end
 
           it 'is expected to print an error message (Name can\'t be blank)' do
@@ -168,7 +137,7 @@ RSpec.describe CreateCommand do
           before do
             create(:dungeon, name: 'Dark rooms')
             allow(socket).to receive(:gets).and_return('Dark rooms')
-            described_class.new('dungeon', session).run
+            session.call_command('create', 'dungeon')
           end
 
           it 'is expected to print an error message (Name has already been taken)' do
@@ -181,7 +150,7 @@ RSpec.describe CreateCommand do
         context 'with valid inputs' do
           before do
             allow(socket).to receive(:gets).and_return('1', 'My room')
-            described_class.new('room', session).run
+            session.call_command('create', 'room')
           end
 
           it 'is expected to prompt the user to choose a dungeon' do

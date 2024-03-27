@@ -3,19 +3,18 @@
 class CreateCommand < BaseCommand
   ARGUMENTS = %w[character dungeon room exit].freeze
 
-  def run
-    with_account do
-      return invalid_argument(argument) unless ARGUMENTS.include?(argument)
+  before :require_account!
+  before :validate_argument!
 
-      send argument
-    end
+  def call
+    send context.argument
   end
 
   private
 
   def character
     model = Character.new
-    model.account = session.account
+    model.account = context.session.account
     model.race = select('Choose a race:', Race.all)
     model.klass = select('Choose a class:', Klass.all)
     model.name = ask('Choose a name:')
@@ -24,15 +23,15 @@ class CreateCommand < BaseCommand
 
   def dungeon
     model = Dungeon.new
-    model.account = session.account
+    model.account = context.session.account
     model.name = ask('Choose a name:')
     model.save ? created_message(model) : error_messages(model)
   end
 
   def room
     model = Room.new
-    model.account = session.account
-    model.dungeon = select('Choose a dungeon:', session.account.dungeons)
+    model.account = context.session.account
+    model.dungeon = select('Choose a dungeon:', context.session.account.dungeons)
     model.name = ask('Choose a name:')
     model.description = ask('Description:')
     model.save ? created_message(model) : error_messages(model)
@@ -40,10 +39,10 @@ class CreateCommand < BaseCommand
 
   def exit
     model = Exit.new
-    model.account = session.account
-    model.dungeon = select('Choose a dungeon:', session.account.dungeons)
-    model.from_room = select('From room:', session.account.rooms)
-    model.to_room = select('To room:', session.account.rooms)
+    model.account = context.session.account
+    model.dungeon = select('Choose a dungeon:', context.session.account.dungeons)
+    model.from_room = select('From room:', context.session.account.rooms)
+    model.to_room = select('To room:', context.session.account.rooms)
     model.direction = ask('Choose a direction:')
     model.save ? created_message(model) : error_messages(model)
   end
