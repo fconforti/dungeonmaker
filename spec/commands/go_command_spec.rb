@@ -13,11 +13,11 @@ RSpec.describe GoCommand do
   describe '.call' do
     context 'without a current account' do
       before do
-        described_class.new('north', session).run
+        session.call_command('go', 'north')
       end
 
-      it 'is expected to show the user a warning message (account required)' do
-        expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+      it 'is expected to show the user a error message (account required)' do
+        expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:red))
       end
     end
 
@@ -30,11 +30,11 @@ RSpec.describe GoCommand do
 
       context 'without a current character' do
         before do
-          described_class.new('north', session).run
+          session.call_command('go', 'north')
         end
 
-        it 'is expected to show the user a warning message (character required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::CHARACTER_REQUIRED.colorize(:yellow))
+        it 'is expected to show the user a error message (character required)' do
+          expect(socket).to have_received(:puts).with(BaseCommand::CHARACTER_REQUIRED.colorize(:red))
         end
       end
 
@@ -47,11 +47,11 @@ RSpec.describe GoCommand do
 
         context 'without a position' do
           before do
-            described_class.new('north', session).run
+            session.call_command('go', 'north')
           end
 
-          it 'is expected to show the user a warning message (position required)' do
-            expect(socket).to have_received(:puts).with(EnterCommand::POSITION_REQUIRED.colorize(:yellow))
+          it 'is expected to show the user a error message (position required)' do
+            expect(socket).to have_received(:puts).with(EnterCommand::POSITION_REQUIRED.colorize(:red))
           end
         end
 
@@ -68,23 +68,23 @@ RSpec.describe GoCommand do
           let!(:room_01) { create(:room, dungeon:, account:) }
 
           before do
-            EnterCommand.new(dungeon.name, session).run
+            create(:character_position, character:, dungeon:, room: room_01, account:)
           end
 
           context 'with invalid direction' do
             before do
-              described_class.new('south', session).run
+              session.call_command('go', 'south')
             end
 
-            it 'is expected to show the user a warning message (no exits nor entrances)' do
-              expect(socket).to have_received(:puts).with('There are no exits nor entrances at the south'.colorize(:yellow))
+            it 'is expected to show the user a error message (no exits nor entrances)' do
+              expect(socket).to have_received(:puts).with('There are no exits nor entrances at the south'.colorize(:red))
             end
           end
 
           context 'with valid directions (exits)' do
             before do
-              described_class.new('north', session).run
-              described_class.new('east', session).run
+              session.call_command('go', 'north')
+              session.call_command('go', 'east')
             end
 
             it 'is expected to chage the character position' do
@@ -94,9 +94,9 @@ RSpec.describe GoCommand do
 
           context 'with valid directions (exits and entrance)' do
             before do
-              described_class.new('north', session).run
-              described_class.new('east', session).run
-              described_class.new('west', session).run
+              session.call_command('go', 'north')
+              session.call_command('go', 'east')
+              session.call_command('go', 'west')
             end
 
             it 'is expected to chage the character position' do

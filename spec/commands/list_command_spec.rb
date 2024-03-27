@@ -18,8 +18,8 @@ RSpec.describe ListCommand do
           described_class.new('characters', session).run
         end
 
-        it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+        it 'is expected to show the user a error message (account required)' do
+          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:red))
         end
       end
 
@@ -35,8 +35,8 @@ RSpec.describe ListCommand do
             described_class.new('characters', session).run
           end
 
-          it 'is expected to show the user a warning message (empty)' do
-            expect(socket).to have_received(:puts).with(ListCommand::EMPTY_LIST.colorize(:yellow))
+          it 'is expected to show the user a error message (empty)' do
+            expect(socket).to have_received(:puts).with(ListCommand::EMPTY_LIST.colorize(:red))
           end
         end
 
@@ -66,8 +66,8 @@ RSpec.describe ListCommand do
           described_class.new('dungeons', session).run
         end
 
-        it 'is expected to show the user a warning message (account required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+        it 'is expected to show the user a error message (account required)' do
+          expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:red))
         end
       end
 
@@ -83,8 +83,8 @@ RSpec.describe ListCommand do
             described_class.new('dungeons', session).run
           end
 
-          it 'is expected to show the user a warning message (empty)' do
-            expect(socket).to have_received(:puts).with(ListCommand::EMPTY_LIST.colorize(:yellow))
+          it 'is expected to show the user a error message (empty)' do
+            expect(socket).to have_received(:puts).with(ListCommand::EMPTY_LIST.colorize(:red))
           end
         end
 

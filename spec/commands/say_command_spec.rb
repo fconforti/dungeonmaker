@@ -23,8 +23,8 @@ RSpec.describe SayCommand do
         described_class.new('hello world!', session_01).run
       end
 
-      it 'is expected to show the user a warning message (account required)' do
-        expect(socket_01).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+      it 'is expected to show the user a error message (account required)' do
+        expect(socket_01).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:red))
       end
     end
 
@@ -40,8 +40,8 @@ RSpec.describe SayCommand do
           described_class.new('hello world!', session_01).run
         end
 
-        it 'is expected to show the user a warning message (character required)' do
-          expect(socket_01).to have_received(:puts).with(BaseCommand::CHARACTER_REQUIRED.colorize(:yellow))
+        it 'is expected to show the user a error message (character required)' do
+          expect(socket_01).to have_received(:puts).with(BaseCommand::CHARACTER_REQUIRED.colorize(:red))
         end
       end
 
@@ -57,8 +57,8 @@ RSpec.describe SayCommand do
             described_class.new('hello world!', session_01).run
           end
 
-          it 'is expected to show the user a warning message (position required)' do
-            expect(socket_01).to have_received(:puts).with(EnterCommand::POSITION_REQUIRED.colorize(:yellow))
+          it 'is expected to show the user a error message (position required)' do
+            expect(socket_01).to have_received(:puts).with(EnterCommand::POSITION_REQUIRED.colorize(:red))
           end
         end
 
