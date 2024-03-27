@@ -20,7 +20,7 @@ RSpec.describe SayCommand do
   describe '.call' do
     context 'without a current account' do
       before do
-        described_class.new('hello world!', session_01).run
+        session_01.call_command('say', 'hello world!')
       end
 
       it 'is expected to show the user a error message (account required)' do
@@ -37,7 +37,7 @@ RSpec.describe SayCommand do
 
       context 'without a current character' do
         before do
-          described_class.new('hello world!', session_01).run
+          session_01.call_command('say', 'hello world!')
         end
 
         it 'is expected to show the user a error message (character required)' do
@@ -54,7 +54,7 @@ RSpec.describe SayCommand do
 
         context 'without a position' do
           before do
-            described_class.new('hello world!', session_01).run
+            session_01.call_command('say', 'hello world!')
           end
 
           it 'is expected to show the user a error message (position required)' do
@@ -86,7 +86,7 @@ RSpec.describe SayCommand do
               session_03.character = character_03
               create(:character_position, character: character_02, dungeon:, room: room_01, account: account_02)
               create(:character_position, character: character_03, dungeon:, room: room_02, account: account_03)
-              described_class.new('hello world!', session_01).run
+              session_01.call_command('say', 'hello world!')
             end
 
             it 'is expected to send a message to all characters in the same room' do

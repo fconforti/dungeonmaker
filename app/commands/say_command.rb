@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 class SayCommand < BaseCommand
-  def run
-    with_account do
-      with_character do |character|
-        with_position do |position|
-          session.chat_server.say(character, position.room, argument)
-        end
-      end
-    end
+  before :require_account!
+  before :require_character!
+  before :require_position!
+
+  def call
+    context.session.chat_server.say(context.session.character, context.session.character.position.room, context.argument)
   end
 end
