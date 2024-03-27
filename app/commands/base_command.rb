@@ -78,8 +78,16 @@ class BaseCommand
     context.fail!(message: ACCOUNT_REQUIRED) unless context.session.account
   end
 
+  def require_character!
+    context.fail!(message: CHARACTER_REQUIRED) unless context.session.character
+  end
+
   def require_no_account!
     context.fail!(message: NO_ACCOUNT_REQUIRED) if context.session.account
+  end
+
+  def require_no_position!
+    context.fail!(message: NO_POSITION_REQUIRED) if context.session.character.position
   end
 
 end

@@ -13,11 +13,11 @@ RSpec.describe EnterCommand do
   describe '.call' do
     context 'without a current account' do
       before do
-        described_class.new('foo', session).run
+        session.call_command('enter', 'foo')
       end
 
       it 'is expected to show the user a warning message (account required)' do
-        expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:yellow))
+        expect(socket).to have_received(:puts).with(BaseCommand::ACCOUNT_REQUIRED.colorize(:red))
       end
     end
 
@@ -30,11 +30,11 @@ RSpec.describe EnterCommand do
 
       context 'without a current character' do
         before do
-          described_class.new('foo', session).run
+          session.call_command('enter', 'foo')
         end
 
         it 'is expected to show the user a warning message (character required)' do
-          expect(socket).to have_received(:puts).with(BaseCommand::CHARACTER_REQUIRED.colorize(:yellow))
+          expect(socket).to have_received(:puts).with(BaseCommand::CHARACTER_REQUIRED.colorize(:red))
         end
       end
 
@@ -49,11 +49,11 @@ RSpec.describe EnterCommand do
           let!(:dungeon) { create(:dungeon, account:) }
 
           before do
-            described_class.new(dungeon.name, session).run
+            session.call_command('enter', dungeon.name)
           end
 
           it 'is expected to show the user a warning message (no position required)' do
-            expect(socket).to have_received(:puts).with(EnterCommand::ROOM_REQUIRED.colorize(:yellow))
+            expect(socket).to have_received(:puts).with(EnterCommand::ROOM_REQUIRED.colorize(:red))
           end
         end
 
@@ -67,17 +67,17 @@ RSpec.describe EnterCommand do
             end
 
             before do
-              described_class.new(dungeon.name, session).run
+              session.call_command('enter', dungeon.name)
             end
 
             it 'is expected to show the user a warning message (no position required)' do
-              expect(socket).to have_received(:puts).with(BaseCommand::NO_POSITION_REQUIRED.colorize(:yellow))
+              expect(socket).to have_received(:puts).with(BaseCommand::NO_POSITION_REQUIRED.colorize(:red))
             end
           end
 
           context "without a current character's position" do
             before do
-              described_class.new(dungeon.name, session).run
+              session.call_command('enter', dungeon.name)
             end
 
             it 'is expected to create the character\'s position' do

@@ -3,27 +3,25 @@
 class EnterCommand < BaseCommand
   ROOM_REQUIRED = 'This dungeon doesn\'t have any room.'
 
-  def run
-    with_account do
-      with_character do
-        with_no_position do
-          if (dungeon = Dungeon.find_by(name: argument))
-            if (room = dungeon.base_room)
-              session.character.create_position(
-                account: session.account,
-                character: session.character,
-                dungeon:,
-                room:
-              )
-              success "You have entered the #{dungeon.name} dungeon. Good luck!"
-            else
-              warning ROOM_REQUIRED
-            end
-          else
-            invalid_argument(argument)
-          end
-        end
+  before :require_account!
+  before :require_character!
+  before :require_no_position!
+
+  def call
+    if (dungeon = Dungeon.find_by(name: context.argument))
+      if (room = dungeon.base_room)
+        context.session.character.create_position(
+          account: context.session.account,
+          character: context.session.character,
+          dungeon:,
+          room:
+        )
+        success "You have entered the #{dungeon.name} dungeon. Good luck!"
+      else
+        context.fail! message: ROOM_REQUIRED
       end
+    else
+      invalid_argument! context.argument
     end
   end
 end
