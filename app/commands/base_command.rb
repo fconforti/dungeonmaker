@@ -24,7 +24,7 @@ class BaseCommand
   private
 
   def print_prompt(prompt)
-    context.session.socket.puts prompt.colorize(:magenta)
+    context.session.socket.puts prompt.colorize(:light_blue)
   end
 
   def user_input
@@ -33,7 +33,7 @@ class BaseCommand
 
   def list_collection(collection)
     collection.each_with_index do |model, index|
-      context.session.socket.print "[#{index + 1}] ".colorize(:magenta)
+      context.session.socket.print "[#{index + 1}] ".colorize(:light_blue)
       context.session.socket.puts model.name
     end
   end

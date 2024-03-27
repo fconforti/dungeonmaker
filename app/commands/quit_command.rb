@@ -2,7 +2,7 @@
 
 class QuitCommand < BaseCommand
   def run
-    session.socket.puts 'Goodbye!'.colorize(:magenta)
+    session.socket.puts 'Goodbye!'.colorize(:light_blue)
     session.socket.close
   end
 end

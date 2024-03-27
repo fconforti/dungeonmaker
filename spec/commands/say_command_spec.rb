@@ -90,9 +90,9 @@ RSpec.describe SayCommand do
             end
 
             it 'is expected to send a message to all characters in the same room' do
-              expect(socket_01).to have_received(:puts).with("[#{character_01.name}] hello world!".colorize(:light_blue))
-              expect(socket_02).to have_received(:puts).with("[#{character_01.name}] hello world!".colorize(:light_blue))
-              expect(socket_03).not_to have_received(:puts).with("[#{character_01.name}] hello world!".colorize(:light_blue))
+              expect(socket_01).to have_received(:puts).with("[#{character_01.name}] hello world!".colorize(:magenta))
+              expect(socket_02).to have_received(:puts).with("[#{character_01.name}] hello world!".colorize(:magenta))
+              expect(socket_03).not_to have_received(:puts).with("[#{character_01.name}] hello world!".colorize(:magenta))
             end
           end
         end

@@ -15,7 +15,7 @@ class ChatServer
 
   def say(character, room, message)
     sockets(room.characters).each do |socket|
-      socket.puts "[#{character.name}] #{message}".colorize(:light_blue)
+      socket.puts "[#{character.name}] #{message}".colorize(:magenta)
     end
   end
 

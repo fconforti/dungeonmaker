@@ -31,15 +31,15 @@ RSpec.describe SignCommand do
           end
 
           it 'is expected to prompt the user to enter email' do
-            expect(socket).to have_received(:puts).with('Enter your email:'.colorize(:magenta))
+            expect(socket).to have_received(:puts).with('Enter your email:'.colorize(:light_blue))
           end
 
           it 'is expected to prompt the user to choose a password' do
-            expect(socket).to have_received(:puts).with('Choose a password:'.colorize(:magenta))
+            expect(socket).to have_received(:puts).with('Choose a password:'.colorize(:light_blue))
           end
 
           it 'is expected to prompt the user to confirm password' do
-            expect(socket).to have_received(:puts).with('Confirm password:'.colorize(:magenta))
+            expect(socket).to have_received(:puts).with('Confirm password:'.colorize(:light_blue))
           end
 
           it 'is expected to show the user a success message' do
@@ -109,11 +109,11 @@ RSpec.describe SignCommand do
             end
 
             it 'is expected to prompt the user to enter email' do
-              expect(socket).to have_received(:puts).with('Enter your email:'.colorize(:magenta))
+              expect(socket).to have_received(:puts).with('Enter your email:'.colorize(:light_blue))
             end
 
             it 'is expected to prompt the user to enter password' do
-              expect(socket).to have_received(:puts).with('Enter your password:'.colorize(:magenta))
+              expect(socket).to have_received(:puts).with('Enter your password:'.colorize(:light_blue))
             end
 
             it 'is expected to show the user a success message' do
