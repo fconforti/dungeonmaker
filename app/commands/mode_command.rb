@@ -3,10 +3,10 @@
 class ModeCommand < BaseCommand
   ARGUMENTS = %w[play edit].freeze
 
-  def run
-    return invalid_argument(argument) unless ARGUMENTS.include?(argument)
+  before :validate_argument!
 
-    session.mode = argument
-    success "Game mode changed: #{session.mode}"
+  def call
+    context.session.mode = context.argument
+    success "Game mode changed: #{context.session.mode}"
   end
 end

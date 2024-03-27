@@ -13,17 +13,17 @@ RSpec.describe ModeCommand do
   describe '.call' do
     context 'with no arguments' do
       before do
-        described_class.new('', session).run
+        session.call_command('mode', '')
       end
 
       it 'is expected to show the user an error message (invalid argument)' do
-        expect(socket).to have_received(:puts).with('Invalid argument: <empty>'.colorize(:red))
+        expect(socket).to have_received(:puts).with('Invalid argument: <blank>'.colorize(:red))
       end
     end
 
     context 'with an invalid argument' do
       before do
-        described_class.new('foo', session).run
+        session.call_command('mode', 'foo')
       end
 
       it 'is expected to show the user an error message (invalid argument)' do
@@ -34,7 +34,7 @@ RSpec.describe ModeCommand do
     ModeCommand::ARGUMENTS.each do |argument|
       context "with a valid argument (#{argument})" do
         before do
-          described_class.new(argument, session).run
+          session.call_command('mode', argument)
         end
 
         it 'is expected to change game mode' do
