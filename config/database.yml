@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: dungeonmaker_production
-  username: dungeonmaker
-  password: <%= ENV["DUNGEONMAKER_DATABASE_PASSWORD"] %>
+  username: postgres
+  password: <%= ENV["POSTGRES_DATABASE_PASSWORD"] %>
