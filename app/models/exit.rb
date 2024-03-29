@@ -31,6 +31,10 @@ class Exit < ApplicationRecord
     belongs_to :to_room, class_name: 'Room'
   end
 
+  with_options inverse_of: :exit, optional: true do
+    belongs_to :key
+  end
+
   validates :direction, presence: true, inclusion: { in: DIRECTIONS }
 
   validate :no_from_room_exit, if: :from_room

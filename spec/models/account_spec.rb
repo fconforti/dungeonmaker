@@ -11,6 +11,7 @@ RSpec.describe Account do
     it { is_expected.to have_many(:character_positions).inverse_of(:account) }
     it { is_expected.to have_many(:dungeons).inverse_of(:account) }
     it { is_expected.to have_many(:rooms).inverse_of(:account) }
+    it { is_expected.to have_many(:keys).inverse_of(:account) }
     it { is_expected.to have_many(:exits).inverse_of(:account) }
   end
 

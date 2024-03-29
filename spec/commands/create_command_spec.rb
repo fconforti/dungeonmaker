@@ -149,7 +149,7 @@ RSpec.describe CreateCommand do
       context "with 'room' argument" do
         context 'with valid inputs' do
           before do
-            allow(socket).to receive(:gets).and_return('1', 'My room')
+            allow(socket).to receive(:gets).and_return('1', 'My room', '')
             session.call_command('create', 'room')
           end
 
@@ -161,11 +161,41 @@ RSpec.describe CreateCommand do
             expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
           end
 
+          it 'is expected to prompt the user to choose a description' do
+            expect(socket).to have_received(:puts).with('Description:'.colorize(:light_blue))
+          end
+
           it 'is expected to print a success message' do
             expect(socket).to have_received(:puts).with('Your room has been created!'.colorize(:green))
           end
         end
       end
+
+      context "with 'key' argument" do
+        context 'with valid inputs' do
+          before do
+            allow(socket).to receive(:gets).and_return('1', 'My key', '')
+            session.call_command('create', 'key')
+          end
+
+          it 'is expected to prompt the user to choose a dungeon' do
+            expect(socket).to have_received(:puts).with('Choose a dungeon:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose a name' do
+            expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose a description' do
+            expect(socket).to have_received(:puts).with('Description:'.colorize(:light_blue))
+          end
+
+          it 'is expected to print a success message' do
+            expect(socket).to have_received(:puts).with('Your key has been created!'.colorize(:green))
+          end
+        end
+      end
+
     end
   end
 end

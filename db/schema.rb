@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_20_125252) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_01_000013) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,13 +84,26 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_125252) do
     t.bigint "dungeon_id", null: false
     t.bigint "from_room_id", null: false
     t.bigint "to_room_id", null: false
+    t.bigint "key_id"
     t.string "direction", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_exits_on_account_id"
     t.index ["dungeon_id"], name: "index_exits_on_dungeon_id"
     t.index ["from_room_id"], name: "index_exits_on_from_room_id"
+    t.index ["key_id"], name: "index_exits_on_key_id"
     t.index ["to_room_id"], name: "index_exits_on_to_room_id"
+  end
+
+  create_table "keys", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "dungeon_id", null: false
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_keys_on_account_id"
+    t.index ["dungeon_id"], name: "index_keys_on_dungeon_id"
   end
 
   create_table "klass_abilities", force: :cascade do |t|
@@ -154,8 +167,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_125252) do
   add_foreign_key "dungeons", "accounts"
   add_foreign_key "exits", "accounts"
   add_foreign_key "exits", "dungeons"
+  add_foreign_key "exits", "keys"
   add_foreign_key "exits", "rooms", column: "from_room_id"
   add_foreign_key "exits", "rooms", column: "to_room_id"
+  add_foreign_key "keys", "accounts"
+  add_foreign_key "keys", "dungeons"
   add_foreign_key "klass_abilities", "abilities"
   add_foreign_key "klass_abilities", "klasses"
   add_foreign_key "race_abilities", "abilities"

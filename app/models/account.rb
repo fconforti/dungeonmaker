@@ -9,6 +9,7 @@ class Account < ApplicationRecord
     has_many :character_positions
     has_many :dungeons
     has_many :rooms
+    has_many :keys
     has_many :exits
   end
 
