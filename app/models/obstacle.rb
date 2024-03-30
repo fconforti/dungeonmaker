@@ -22,4 +22,12 @@ class Obstacle < ApplicationRecord
     where.not(id: character.passes.map{|p| p.obstacle_id})
   end
 
+  def let?(character)
+    case item_type
+    when 'Key'
+      # character.inventory.include? key
+      true
+    end
+  end
+
 end

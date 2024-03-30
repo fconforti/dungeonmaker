@@ -36,6 +36,14 @@ class Character < ApplicationRecord
     self.hp = klass.hit_die_sides
   end
 
+  def pass!(obstacle)
+    if obstacle.let?(character)
+      passes.where(account: account, dungeon: position.dungeon, obstacle: obstacle).first_or_create!
+      return true
+    end
+    false
+  end
+
   private
 
   def ensure_abilities
