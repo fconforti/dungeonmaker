@@ -17,10 +17,6 @@ class Exit < ApplicationRecord
     WEST => EAST
   }.freeze
 
-  def name
-    "From #{from_room.name} to #{to_room.name}"
-  end
-
   with_options inverse_of: :exits do
     belongs_to :account
     belongs_to :dungeon
@@ -31,8 +27,8 @@ class Exit < ApplicationRecord
     belongs_to :to_room, class_name: 'Room'
   end
 
-  with_options inverse_of: :exit, optional: true do
-    belongs_to :key
+  with_options inverse_of: :exit, dependent: :restrict_with_exception do
+    has_many :obstacles, class_name: 'ExitObstacle'
   end
 
   validates :direction, presence: true, inclusion: { in: DIRECTIONS }
@@ -41,6 +37,8 @@ class Exit < ApplicationRecord
   validate :no_from_room_entrance, if: :from_room
   validate :no_to_room_exit, if: :to_room
   validate :no_to_room_entrance, if: :to_room
+
+  validates :name, presence: true, uniqueness: { scope: :from_room_id }
 
   private
 

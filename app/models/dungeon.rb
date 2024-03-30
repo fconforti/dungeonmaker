@@ -12,6 +12,7 @@ class Dungeon < ApplicationRecord
     has_many :keys
     has_many :exits
     has_many :character_positions
+    has_many :exit_obstacles    
   end
 
   validates :name, presence: true, uniqueness: true

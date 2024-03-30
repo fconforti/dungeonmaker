@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CreateCommand < BaseCommand
-  ARGUMENTS = %w[character dungeon room key exit].freeze
+  ARGUMENTS = %w[character dungeon room key exit exit_obstacle].freeze
 
   before :require_account!
   before :validate_argument!
@@ -53,7 +53,21 @@ class CreateCommand < BaseCommand
     model.from_room = select('From room:', context.session.account.rooms)
     model.to_room = select('To room:', context.session.account.rooms)
     model.direction = ask('Choose a direction:')
-    model.key = select('Key:', context.session.account.keys)
+    model.name = ask('Choose a name:')
+    model.description = ask('Description:')
     model.save ? created_message(model) : error_messages(model)
   end
+
+  def exit_obstacle
+    model = ExitObstacle.new
+    model.account = context.session.account
+    model.dungeon = select('Choose a dungeon:', context.session.account.dungeons)
+    model.exit = select('Choose an exit:', context.session.account.exits)
+    item_type = select('Item type:', ExitObstacle::ITEM_TYPES)
+    model.item = select('Choose an item:', Object.const_get(item_type).where(dungeon_id: model.dungeon_id).all)
+    model.name = ask('Choose a name:')
+    model.description = ask('Description:')
+    model.save ? created_message(model) : error_messages(model)
+  end
+
 end

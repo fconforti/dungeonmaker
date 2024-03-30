@@ -8,7 +8,7 @@ RSpec.describe Key do
   describe 'associations' do
     it { is_expected.to belong_to(:account).inverse_of(:keys) }
     it { is_expected.to belong_to(:dungeon).inverse_of(:keys) }
-    it { is_expected.to have_one(:exit).inverse_of(:key) }
+    it { is_expected.to have_many(:exit_obstacles).inverse_of(:item) }
   end
 
   describe 'validations' do

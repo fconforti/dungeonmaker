@@ -13,6 +13,7 @@ RSpec.describe Account do
     it { is_expected.to have_many(:rooms).inverse_of(:account) }
     it { is_expected.to have_many(:keys).inverse_of(:account) }
     it { is_expected.to have_many(:exits).inverse_of(:account) }
+    it { is_expected.to have_many(:exit_obstacles).inverse_of(:account) }
   end
 
   describe 'validations' do

@@ -6,8 +6,8 @@ class Key < ApplicationRecord
     belongs_to :dungeon
   end
 
-  with_options inverse_of: :key do
-    has_one :exit
+  with_options inverse_of: :item do
+    has_many :exit_obstacles, as: :item
   end
 
   validates :name, presence: true, uniqueness: true

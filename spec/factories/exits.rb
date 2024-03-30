@@ -7,5 +7,6 @@ FactoryBot.define do
     association :from_room, factory: :room
     association :to_room, factory: :room
     direction { 'north' }
+    sequence(:name) { |n| "exit #{n}" }
   end
 end

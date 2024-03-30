@@ -22,5 +22,5 @@ class Room < ApplicationRecord
 
   has_many :characters, through: :character_positions
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: { scope: :dungeon_id }
 end

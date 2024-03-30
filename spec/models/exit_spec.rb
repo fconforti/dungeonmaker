@@ -15,6 +15,7 @@ RSpec.describe Exit do
   describe 'associations' do
     it { is_expected.to belong_to(:from_room).class_name('Room').inverse_of(:exits) }
     it { is_expected.to belong_to(:to_room).class_name('Room').inverse_of(:entrances) }
+    it { is_expected.to have_many(:obstacles).class_name('ExitObstacle').inverse_of(:exit) }
   end
 
   describe 'validations' do

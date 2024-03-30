@@ -171,6 +171,46 @@ RSpec.describe CreateCommand do
         end
       end
 
+      context "with 'exit' argument" do
+        let!(:from_room) { create :room, account: account, dungeon: dungeon }
+        let!(:to_room) { create :room, account: account, dungeon: dungeon }
+
+        context 'with valid inputs' do
+          before do
+            allow(socket).to receive(:gets).and_return('1', '1', '2', 'north', 'My exit')
+            session.call_command('create', 'exit')
+          end
+
+          it 'is expected to prompt the user to choose a dungeon' do
+            expect(socket).to have_received(:puts).with('Choose a dungeon:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose a from room' do
+            expect(socket).to have_received(:puts).with('From room:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose a to room' do
+            expect(socket).to have_received(:puts).with('To room:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose a direction' do
+            expect(socket).to have_received(:puts).with('Choose a direction:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose a name' do
+            expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose a description' do
+            expect(socket).to have_received(:puts).with('Description:'.colorize(:light_blue))
+          end
+
+          it 'is expected to print a success message' do
+            expect(socket).to have_received(:puts).with('Your exit has been created!'.colorize(:green))
+          end
+        end
+      end
+
       context "with 'key' argument" do
         context 'with valid inputs' do
           before do
@@ -192,6 +232,48 @@ RSpec.describe CreateCommand do
 
           it 'is expected to print a success message' do
             expect(socket).to have_received(:puts).with('Your key has been created!'.colorize(:green))
+          end
+        end
+      end
+
+      context "with 'exit_obstacle' argument" do
+        let!(:from_room) { create :room, account: account, dungeon: dungeon }
+        let!(:to_room) { create :room, account: account, dungeon: dungeon }
+        let!(:exit) { create :exit, account: account, dungeon: dungeon, from_room: from_room, to_room: to_room }
+        let!(:key) { create :key, account: account, dungeon: dungeon }
+
+        context 'with valid inputs' do
+          before do
+            allow(socket).to receive(:gets).and_return('1', '1', 'Key', '1', 'My exit obstacle')
+            session.call_command('create', 'exit_obstacle')
+          end
+
+          it 'is expected to prompt the user to choose a dungeon' do
+            expect(socket).to have_received(:puts).with('Choose a dungeon:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose an exit' do
+            expect(socket).to have_received(:puts).with('Choose an exit:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose an item type' do
+            expect(socket).to have_received(:puts).with('Item type:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose an item' do
+            expect(socket).to have_received(:puts).with('Choose an item:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose a name' do
+            expect(socket).to have_received(:puts).with('Choose a name:'.colorize(:light_blue))
+          end
+
+          it 'is expected to prompt the user to choose a description' do
+            expect(socket).to have_received(:puts).with('Description:'.colorize(:light_blue))
+          end
+
+          it 'is expected to print a success message' do
+            expect(socket).to have_received(:puts).with('Your exit obstacle has been created!'.colorize(:green))
           end
         end
       end

@@ -34,7 +34,8 @@ class BaseCommand
   def list_collection(collection)
     collection.each_with_index do |model, index|
       context.session.socket.print "[#{index + 1}] ".colorize(:light_blue)
-      context.session.socket.puts model.name
+      name = model.is_a?(String) ? model : model.name
+      context.session.socket.puts name
     end
   end
 
@@ -46,7 +47,7 @@ class BaseCommand
   end
 
   def created_message(model)
-    context.session.socket.puts "Your #{model.class.name.humanize.downcase} has been created!".colorize(:green)
+    context.session.socket.puts "Your #{model.class.name.underscore.humanize.downcase} has been created!".colorize(:green)
     model.print(context.session.socket)
   end
 
