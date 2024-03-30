@@ -11,7 +11,8 @@ class Account < ApplicationRecord
     has_many :rooms
     has_many :keys
     has_many :exits
-    has_many :exit_obstacles
+    has_many :obstacles
+    has_many :passes
   end
 
   validates :email, presence: true, uniqueness: true

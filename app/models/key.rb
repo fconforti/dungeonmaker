@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Key < ApplicationRecord
   include Print
 
@@ -7,7 +9,7 @@ class Key < ApplicationRecord
   end
 
   with_options inverse_of: :item do
-    has_many :exit_obstacles, as: :item
+    has_many :obstacles, as: :item
   end
 
   validates :name, presence: true, uniqueness: true

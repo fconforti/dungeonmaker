@@ -28,7 +28,7 @@ class Exit < ApplicationRecord
   end
 
   with_options inverse_of: :exit, dependent: :restrict_with_exception do
-    has_many :obstacles, class_name: 'ExitObstacle'
+    has_many :obstacles, class_name: 'Obstacle'
   end
 
   validates :direction, presence: true, inclusion: { in: DIRECTIONS }

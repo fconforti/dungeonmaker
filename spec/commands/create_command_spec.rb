@@ -236,7 +236,7 @@ RSpec.describe CreateCommand do
         end
       end
 
-      context "with 'exit_obstacle' argument" do
+      context "with 'obstacle' argument" do
         let!(:from_room) { create :room, account: account, dungeon: dungeon }
         let!(:to_room) { create :room, account: account, dungeon: dungeon }
         let!(:exit) { create :exit, account: account, dungeon: dungeon, from_room: from_room, to_room: to_room }
@@ -244,8 +244,8 @@ RSpec.describe CreateCommand do
 
         context 'with valid inputs' do
           before do
-            allow(socket).to receive(:gets).and_return('1', '1', 'Key', '1', 'My exit obstacle')
-            session.call_command('create', 'exit_obstacle')
+            allow(socket).to receive(:gets).and_return('1', '1', 'Key', '1', 'My obstacle')
+            session.call_command('create', 'obstacle')
           end
 
           it 'is expected to prompt the user to choose a dungeon' do
@@ -273,7 +273,7 @@ RSpec.describe CreateCommand do
           end
 
           it 'is expected to print a success message' do
-            expect(socket).to have_received(:puts).with('Your exit obstacle has been created!'.colorize(:green))
+            expect(socket).to have_received(:puts).with('Your obstacle has been created!'.colorize(:green))
           end
         end
       end

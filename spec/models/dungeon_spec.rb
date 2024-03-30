@@ -10,7 +10,8 @@ RSpec.describe Dungeon do
     it { is_expected.to have_many(:rooms).inverse_of(:dungeon) }
     it { is_expected.to have_many(:keys).inverse_of(:dungeon) }
     it { is_expected.to have_many(:exits).inverse_of(:dungeon) }
-    it { is_expected.to have_many(:exit_obstacles).inverse_of(:dungeon) }
+    it { is_expected.to have_many(:obstacles).inverse_of(:dungeon) }
+    it { is_expected.to have_many(:passes).inverse_of(:dungeon) }
   end
 
   describe 'validations' do

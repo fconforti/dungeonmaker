@@ -15,6 +15,7 @@ class Character < ApplicationRecord
 
   with_options inverse_of: :character, dependent: :restrict_with_exception do
     has_many :character_abilities
+    has_many :passes
     has_one :position, class_name: 'CharacterPosition'
   end
 

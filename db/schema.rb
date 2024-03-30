@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_30_153626) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_01_000015) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -80,23 +80,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_30_153626) do
     t.index ["name"], name: "index_dungeons_on_name", unique: true
   end
 
-  create_table "exit_obstacles", force: :cascade do |t|
-    t.bigint "account_id", null: false
-    t.bigint "dungeon_id", null: false
-    t.bigint "exit_id", null: false
-    t.string "item_type", null: false
-    t.bigint "item_id", null: false
-    t.string "name", null: false
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_exit_obstacles_on_account_id"
-    t.index ["dungeon_id"], name: "index_exit_obstacles_on_dungeon_id"
-    t.index ["exit_id"], name: "index_exit_obstacles_on_exit_id"
-    t.index ["item_type", "item_id"], name: "index_exit_obstacles_on_item"
-    t.index ["name", "exit_id"], name: "index_exit_obstacles_on_name_and_exit_id", unique: true
-  end
-
   create_table "exits", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.bigint "dungeon_id", null: false
@@ -144,6 +127,36 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_30_153626) do
     t.index ["name"], name: "index_klasses_on_name", unique: true
   end
 
+  create_table "obstacles", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "dungeon_id", null: false
+    t.bigint "exit_id", null: false
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_obstacles_on_account_id"
+    t.index ["dungeon_id"], name: "index_obstacles_on_dungeon_id"
+    t.index ["exit_id"], name: "index_obstacles_on_exit_id"
+    t.index ["item_type", "item_id"], name: "index_obstacles_on_item"
+    t.index ["name", "exit_id"], name: "index_obstacles_on_name_and_exit_id", unique: true
+  end
+
+  create_table "passes", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "dungeon_id", null: false
+    t.bigint "character_id", null: false
+    t.bigint "obstacle_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_passes_on_account_id"
+    t.index ["character_id"], name: "index_passes_on_character_id"
+    t.index ["dungeon_id"], name: "index_passes_on_dungeon_id"
+    t.index ["obstacle_id"], name: "index_passes_on_obstacle_id"
+  end
+
   create_table "race_abilities", force: :cascade do |t|
     t.bigint "race_id", null: false
     t.bigint "ability_id", null: false
@@ -185,9 +198,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_30_153626) do
   add_foreign_key "characters", "klasses"
   add_foreign_key "characters", "races"
   add_foreign_key "dungeons", "accounts"
-  add_foreign_key "exit_obstacles", "accounts"
-  add_foreign_key "exit_obstacles", "dungeons"
-  add_foreign_key "exit_obstacles", "exits"
   add_foreign_key "exits", "accounts"
   add_foreign_key "exits", "dungeons"
   add_foreign_key "exits", "rooms", column: "from_room_id"
@@ -196,6 +206,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_30_153626) do
   add_foreign_key "keys", "dungeons"
   add_foreign_key "klass_abilities", "abilities"
   add_foreign_key "klass_abilities", "klasses"
+  add_foreign_key "obstacles", "accounts"
+  add_foreign_key "obstacles", "dungeons"
+  add_foreign_key "obstacles", "exits"
+  add_foreign_key "passes", "accounts"
+  add_foreign_key "passes", "characters"
+  add_foreign_key "passes", "dungeons"
+  add_foreign_key "passes", "obstacles"
   add_foreign_key "race_abilities", "abilities"
   add_foreign_key "race_abilities", "races"
   add_foreign_key "rooms", "accounts"

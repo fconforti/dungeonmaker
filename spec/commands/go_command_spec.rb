@@ -81,28 +81,58 @@ RSpec.describe GoCommand do
             end
           end
 
-          context 'with valid directions (exits)' do
-            before do
-              session.call_command('go', 'north')
-              session.call_command('go', 'east')
+          context 'without obstacles' do
+            context 'with valid directions (exits)' do
+              before do
+                session.call_command('go', 'north')
+                session.call_command('go', 'east')
+              end
+
+              it 'is expected to chage the character position' do
+                expect(character.position.room).to eq(room_03)
+              end  
             end
 
-            it 'is expected to chage the character position' do
-              expect(character.position.room).to eq(room_03)
+            context 'with valid directions (exits and entrance)' do
+              before do
+                session.call_command('go', 'north')
+                session.call_command('go', 'east')
+                session.call_command('go', 'west')
+              end
+
+              it 'is expected to chage the character position' do
+                expect(character.position.room).to eq(room_02)
+              end
             end
           end
 
-          context 'with valid directions (exits and entrance)' do
+          context 'with an obstacle' do
+            let!(:key) { create :key, account: account, dungeon: dungeon }
+            let!(:obstacle) { create :obstacle, account: account, dungeon: dungeon, exit: exit_0102, item: key }
+
             before do
               session.call_command('go', 'north')
-              session.call_command('go', 'east')
-              session.call_command('go', 'west')
+            end
+
+            it 'is expected to show the user a error message (obstacle)' do
+              expect(socket).to have_received(:puts).with("#{obstacle.name}".colorize(:red))
+            end
+          end
+
+          context 'with an obstacle and a pass' do
+            let!(:key) { create :key, account: account, dungeon: dungeon }
+            let!(:obstacle) { create :obstacle, account: account, dungeon: dungeon, exit: exit_0102, item: key }
+            let!(:pass) { create :pass, account: account, dungeon: dungeon, character: character, obstacle: obstacle }
+
+            before do
+              session.call_command('go', 'north')
             end
 
             it 'is expected to chage the character position' do
               expect(character.position.room).to eq(room_02)
             end
           end
+
         end
       end
     end
