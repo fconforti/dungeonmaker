@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_01_000015) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_01_070254) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -95,6 +95,28 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_01_000015) do
     t.index ["from_room_id"], name: "index_exits_on_from_room_id"
     t.index ["name", "from_room_id"], name: "index_exits_on_name_and_from_room_id", unique: true
     t.index ["to_room_id"], name: "index_exits_on_to_room_id"
+  end
+
+  create_table "inventories", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "character_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_inventories_on_account_id"
+    t.index ["character_id"], name: "index_inventories_on_character_id"
+  end
+
+  create_table "inventory_items", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "inventory_id", null: false
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_inventory_items_on_account_id"
+    t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id"
+    t.index ["item_type", "item_id"], name: "index_inventory_items_on_item"
   end
 
   create_table "keys", force: :cascade do |t|
@@ -202,6 +224,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_01_000015) do
   add_foreign_key "exits", "dungeons"
   add_foreign_key "exits", "rooms", column: "from_room_id"
   add_foreign_key "exits", "rooms", column: "to_room_id"
+  add_foreign_key "inventories", "accounts"
+  add_foreign_key "inventories", "characters"
+  add_foreign_key "inventory_items", "accounts"
+  add_foreign_key "inventory_items", "inventories"
   add_foreign_key "keys", "accounts"
   add_foreign_key "keys", "dungeons"
   add_foreign_key "klass_abilities", "abilities"

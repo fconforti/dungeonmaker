@@ -10,6 +10,7 @@ class Key < ApplicationRecord
 
   with_options inverse_of: :item do
     has_many :obstacles, as: :item
+    has_many :inventory_items, as: :item
   end
 
   validates :name, presence: true, uniqueness: true

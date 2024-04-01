@@ -9,7 +9,7 @@ class PassCommand < BaseCommand
     position = context.session.character.position
     if obstacle = position.room.obstacles.find_by(name: context.argument)
       unless context.session.character.pass!(obstacle)
-        context.fail!(message: "You can't pass #{obstacle.name}") 
+        context.fail!(message: "You can't pass: #{obstacle.name}") 
       end
     else
       invalid_argument! context.argument

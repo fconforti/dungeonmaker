@@ -13,6 +13,8 @@ class Account < ApplicationRecord
     has_many :exits
     has_many :obstacles
     has_many :passes
+    has_many :inventories
+    has_many :inventory_items
   end
 
   validates :email, presence: true, uniqueness: true

@@ -17,6 +17,7 @@ class Character < ApplicationRecord
     has_many :character_abilities
     has_many :passes
     has_one :position, class_name: 'CharacterPosition'
+    has_one :inventory
   end
 
   validates :name, presence: true, uniqueness: true
@@ -37,7 +38,7 @@ class Character < ApplicationRecord
   end
 
   def pass!(obstacle)
-    if obstacle.let?(character)
+    if obstacle.let?(self)
       passes.where(account: account, dungeon: position.dungeon, obstacle: obstacle).first_or_create!
       return true
     end

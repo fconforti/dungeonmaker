@@ -15,6 +15,7 @@ RSpec.describe Account do
     it { is_expected.to have_many(:exits).inverse_of(:account) }
     it { is_expected.to have_many(:obstacles).inverse_of(:account) }
     it { is_expected.to have_many(:passes).inverse_of(:account) }
+    it { is_expected.to have_many(:inventories).inverse_of(:account) }
   end
 
   describe 'validations' do
